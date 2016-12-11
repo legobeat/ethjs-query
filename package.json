@@ -1,6 +1,6 @@
 {
   "name": "ethjs-query",
-  "version": "0.1.4",
+  "version": "0.1.3",
   "description": "A simple query layer for the Ethereum RPC.",
   "main": "lib/index.js",
   "files": [
