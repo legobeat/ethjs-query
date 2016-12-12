@@ -1,3 +1,7 @@
+# 0.1.6 -- Strinigy RPC error
+
+1. Added JSON.strinify for RPC error handling
+
 # 0.1.5 -- format update
 
 1. Tigher formatting enforcement
