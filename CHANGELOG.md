@@ -1,6 +1,6 @@
-# 0.2.2 -- package updates
+# 0.2.3 -- package updates
 
-1. Update ethjs-rpc
+1. Update ethjs-rpc, handle 405 errors better
 
 # 0.2.1 -- handle non RPC errors better
 
