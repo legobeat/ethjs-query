@@ -1,3 +1,7 @@
+# 0.2.2 -- package updates
+
+1. Update ethjs-rpc
+
 # 0.2.1 -- handle non RPC errors better
 
 1. Handle non rpc errors better
