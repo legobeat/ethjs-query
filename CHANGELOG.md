@@ -1,3 +1,5 @@
+# 0.2.4 -- personal sign and ecrecover
+
 # 0.2.3 -- package updates
 
 1. Update ethjs-rpc, handle 405 errors better
