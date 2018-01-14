@@ -2213,19 +2213,25 @@ function EthRPC(cprovider, options) {
  */
 EthRPC.prototype.sendAsync = function sendAsync(payload, cb) {
   var self = this;
+  var callback = cb || function () {};
   self.idCounter = self.idCounter % self.options.max;
   var parsedPayload = createPayload(payload, self.idCounter++);
-  self.currentProvider.sendAsync(parsedPayload, function (err, response) {
-    var responseObject = response || {};
 
-    if (err || responseObject.error) {
-      var payloadErrorMessage = '[ethjs-rpc] ' + (responseObject.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(parsedPayload, null, self.options.jsonSpace) + ' ' + (String(err) || JSON.stringify(responseObject.error, null, self.options.jsonSpace));
-      var payloadError = new Error(payloadErrorMessage);
-      payloadError.value = err || responseObject.error;
-      return cb(payloadError, null);
-    }
+  return new Promise(function (resolve, reject) {
+    self.currentProvider.sendAsync(parsedPayload, function (err, response) {
+      var responseObject = response || {};
 
-    return cb(null, responseObject.result);
+      if (err || responseObject.error) {
+        var payloadErrorMessage = '[ethjs-rpc] ' + (responseObject.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(parsedPayload, null, self.options.jsonSpace) + ' ' + (err ? String(err) : JSON.stringify(responseObject.error, null, self.options.jsonSpace));
+        var payloadError = new Error(payloadErrorMessage);
+        payloadError.value = err || responseObject.error;
+        reject(payloadError);
+        return callback(payloadError, null);
+      }
+
+      resolve(responseObject.result);
+      return callback(null, responseObject.result);
+    });
   });
 };
 
@@ -6425,13 +6431,16 @@ module.exports = {
 		"eth_sign": [
 			[
 				"D20",
-				"D32"
+				"D"
 			],
 			"D",
 			2
 		],
 		"eth_signTypedData": [
-			"D32",
+			[
+				"Array|DATA",
+				"D20"
+			],
 			"D",
 			1
 		],
