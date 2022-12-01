@@ -44,16 +44,27 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmory imports with the correct context
+/******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
-/******/ 	// define getter function for harmory exports
+/******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		Object.defineProperty(exports, name, {
-/******/ 			configurable: false,
-/******/ 			enumerable: true,
-/******/ 			get: getter
-/******/ 		});
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
 /******/ 	};
 /******/
 /******/ 	// Object.prototype.hasOwnProperty.call
@@ -63,17 +74,17 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
 
-var isHexPrefixed = __webpack_require__(4);
+
+var isHexPrefixed = __webpack_require__(3);
 
 /**
  * Removes '0x' from a given `String` is present
@@ -88,24 +99,96 @@ module.exports = function stripHexPrefix(str) {
   return isHexPrefixed(str) ? str.slice(2) : str;
 };
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
+
+var isFn = __webpack_require__(12);
+var setImmediate = __webpack_require__(16);
+
+module.exports = function (promise) {
+	if (!isFn(promise.then)) {
+		throw new TypeError('Expected a promise');
+	}
+
+	return function (cb) {
+		promise.then(function (data) {
+			setImmediate(cb, null, data);
+		}, function (err) {
+			setImmediate(cb, err);
+		});
+	};
+};
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Returns a `Boolean` on whether or not the a `String` starts with '0x'
+ * @param {String} str the string input value
+ * @return {Boolean} a boolean if it is or is not hex prefixed
+ * @throws if the str input is not a string
+ */
+module.exports = function isHexPrefixed(str) {
+  if (typeof str !== 'string') {
+    throw new Error("[is-hex-prefixed] value must be type 'string', is currently type " + typeof str + ", while checking isHexPrefixed.");
+  }
+
+  return str.slice(0, 2) === '0x';
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/*!
  * The buffer module from node.js, for the browser.
  *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @author   Feross Aboukhadijeh <http://feross.org>
  * @license  MIT
  */
 /* eslint-disable no-proto */
 
-'use strict'
 
-var base64 = __webpack_require__(9)
-var ieee754 = __webpack_require__(12)
-var isArray = __webpack_require__(14)
+
+var base64 = __webpack_require__(8)
+var ieee754 = __webpack_require__(11)
+var isArray = __webpack_require__(13)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -1883,145 +1966,18 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer, __webpack_require__(18)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(17).nextTick;
-var apply = Function.prototype.apply;
-var slice = Array.prototype.slice;
-var immediateIds = {};
-var nextImmediateId = 0;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) { timeout.close(); };
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// That's not how node.js implements it but the exposed api is the same.
-exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
-  var id = nextImmediateId++;
-  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-
-  immediateIds[id] = true;
-
-  nextTick(function onNextTick() {
-    if (immediateIds[id]) {
-      // fn.call() is faster so we optimize for the common use-case
-      // @see http://jsperf.com/call-apply-segu
-      if (args) {
-        fn.apply(null, args);
-      } else {
-        fn.call(null);
-      }
-      // Prevent ids from leaking
-      exports.clearImmediate(id);
-    }
-  });
-
-  return id;
-};
-
-exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
-  delete immediateIds[id];
-};
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).setImmediate, __webpack_require__(2).clearImmediate))
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-var isFn = __webpack_require__(13);
-var setImmediate = __webpack_require__(16);
-
-module.exports = function (promise) {
-	if (!isFn(promise.then)) {
-		throw new TypeError('Expected a promise');
-	}
-
-	return function (cb) {
-		promise.then(function (data) {
-			setImmediate(cb, null, data);
-		}, function (err) {
-			setImmediate(cb, err);
-		});
-	};
-};
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-
-/**
- * Returns a `Boolean` on whether or not the a `String` starts with '0x'
- * @param {String} str the string input value
- * @return {Boolean} a boolean if it is or is not hex prefixed
- * @throws if the str input is not a string
- */
-module.exports = function isHexPrefixed(str) {
-  if (typeof str !== 'string') {
-    throw new Error("[is-hex-prefixed] value must be type 'string', is currently type " + typeof str + ", while checking isHexPrefixed.");
-  }
-
-  return str.slice(0, 2) === '0x';
-};
-
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
 
-var schema = __webpack_require__(15);
-var util = __webpack_require__(11);
-var numberToBN = __webpack_require__(8);
+
+var schema = __webpack_require__(14);
+var util = __webpack_require__(10);
+var numberToBN = __webpack_require__(7);
 var stripHexPrefix = __webpack_require__(0);
 var padToEven = util.padToEven;
 var arrayContainsArray = util.arrayContainsArray;
@@ -2272,14 +2228,14 @@ module.exports = {
   formatOutputs: formatOutputs
 };
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
 
-var promiseToCallback = __webpack_require__(3);
+
+var promiseToCallback = __webpack_require__(2);
 
 module.exports = EthRPC;
 
@@ -2369,135 +2325,14 @@ function createPayload(data, id) {
   }, data);
 }
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
 
-var format = __webpack_require__(5);
-var EthRPC = __webpack_require__(6);
-var promiseToCallback = __webpack_require__(3);
 
-module.exports = Eth;
-
-function Eth(provider, options) {
-  var self = this;
-  var optionsObject = options || {};
-
-  if (!(this instanceof Eth)) {
-    throw new Error('[ethjs-query] the Eth object requires the "new" flag in order to function normally (i.e. `const eth = new Eth(provider);`).');
-  }
-  if (typeof provider !== 'object') {
-    throw new Error('[ethjs-query] the Eth object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new Eth(provider);\')');
-  }
-
-  self.options = Object.assign({
-    debug: optionsObject.debug || false,
-    logger: optionsObject.logger || console,
-    jsonSpace: optionsObject.jsonSpace || 0
-  });
-  self.rpc = new EthRPC(provider);
-  self.setProvider = self.rpc.setProvider;
-}
-
-Eth.prototype.log = function log(message) {
-  var self = this;
-  if (self.options.debug) self.options.logger.log('[ethjs-query log] ' + message);
-};
-
-Object.keys(format.schema.methods).forEach(function (rpcMethodName) {
-  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
-    enumerable: true,
-    value: generateFnFor(rpcMethodName, format.schema.methods[rpcMethodName])
-  });
-});
-
-function generateFnFor(rpcMethodName, methodObject) {
-  return function outputMethod() {
-    var callback = null; // eslint-disable-line
-    var inputs = null; // eslint-disable-line
-    var inputError = null; // eslint-disable-line
-    var self = this;
-    var args = [].slice.call(arguments); // eslint-disable-line
-    var protoMethodName = rpcMethodName.replace('eth_', ''); // eslint-disable-line
-
-    if (args.length > 0 && typeof args[args.length - 1] === 'function') {
-      callback = args.pop();
-    }
-
-    var promise = performCall.call(this);
-
-    // if callback provided, convert promise to callback
-    if (callback) {
-      return promiseToCallback(promise)(callback);
-    }
-
-    // only return promise if no callback provided
-    return promise;
-
-    function performCall() {
-      var _this = this;
-
-      return new Promise(function (resolve, reject) {
-        // validate arg length
-        if (args.length < methodObject[2]) {
-          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at least ' + methodObject[2] + ' input (format type ' + methodObject[0][0] + '), ' + args.length + ' provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
-          return;
-        }
-        if (args.length > methodObject[0].length) {
-          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at most ' + methodObject[0].length + ' params, ' + args.length + ' provided \'' + JSON.stringify(args, null, self.options.jsonSpace) + '\'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
-          return;
-        }
-
-        // set default block
-        if (methodObject[3] && args.length < methodObject[3]) {
-          args.push('latest');
-        }
-
-        // format inputs
-        _this.log('attempting method formatting for \'' + protoMethodName + '\' with inputs ' + JSON.stringify(args, null, _this.options.jsonSpace));
-        try {
-          inputs = format.formatInputs(rpcMethodName, args);
-          _this.log('method formatting success for \'' + protoMethodName + '\' with formatted result: ' + JSON.stringify(inputs, null, _this.options.jsonSpace));
-        } catch (formattingError) {
-          reject(new Error('[ethjs-query] while formatting inputs \'' + JSON.stringify(args, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' error: ' + formattingError));
-          return;
-        }
-
-        // perform rpc call
-        _this.rpc.sendAsync({ method: rpcMethodName, params: inputs }).then(function (result) {
-          // format result
-          try {
-            _this.log('attempting method formatting for \'' + protoMethodName + '\' with raw outputs: ' + JSON.stringify(result, null, _this.options.jsonSpace));
-            var methodOutputs = format.formatOutputs(rpcMethodName, result);
-            _this.log('method formatting success for \'' + protoMethodName + '\' formatted result: ' + JSON.stringify(methodOutputs, null, _this.options.jsonSpace));
-            resolve(methodOutputs);
-            return;
-          } catch (outputFormattingError) {
-            var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(result, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' ' + outputFormattingError);
-            reject(outputError);
-            return;
-          }
-        })['catch'](function (error) {
-          var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(error, null, _this.options.jsonSpace) + '\'');
-          reject(outputError);
-          return;
-        });
-      });
-    }
-  };
-}
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-
-var BN = __webpack_require__(10);
+var BN = __webpack_require__(9);
 var stripHexPrefix = __webpack_require__(0);
 
 /**
@@ -2534,12 +2369,12 @@ module.exports = function numberToBN(arg) {
   throw new Error('[number-to-bn] while converting number ' + JSON.stringify(arg) + ' to BN.js instance, error: invalid number value. Value must be an integer, hex string, BN or BigNumber instance. Note, decimals are not supported.');
 };
 
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict'
+
 
 exports.byteLength = byteLength
 exports.toByteArray = toByteArray
@@ -2606,7 +2441,8 @@ function toByteArray (b64) {
     ? validLen - 4
     : validLen
 
-  for (var i = 0; i < len; i += 4) {
+  var i
+  for (i = 0; i < len; i += 4) {
     tmp =
       (revLookup[b64.charCodeAt(i)] << 18) |
       (revLookup[b64.charCodeAt(i + 1)] << 12) |
@@ -2665,9 +2501,7 @@ function fromByteArray (uint8) {
 
   // go through the array every three bytes, we'll deal with trailing stuff later
   for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(
-      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
-    ))
+    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
   }
 
   // pad the end with zeros, but make sure to not forget the extra bytes
@@ -2692,9 +2526,9 @@ function fromByteArray (uint8) {
 }
 
 
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
   'use strict';
@@ -2748,7 +2582,7 @@ function fromByteArray (uint8) {
 
   var Buffer;
   try {
-    Buffer = __webpack_require__(1).Buffer;
+    Buffer = __webpack_require__(4).Buffer;
   } catch (e) {
   }
 
@@ -6126,14 +5960,14 @@ function fromByteArray (uint8) {
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)(module)))
 
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
+/* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var isHexPrefixed = __webpack_require__(4);
+var isHexPrefixed = __webpack_require__(3);
 var stripHexPrefix = __webpack_require__(0);
 
 /**
@@ -6351,12 +6185,13 @@ module.exports = {
   getKeys: getKeys,
   isHexString: isHexString
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).Buffer))
 
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
 
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -6443,12 +6278,12 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 }
 
 
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 var toString = Object.prototype.toString;
 
 module.exports = function (x) {
@@ -6456,9 +6291,9 @@ module.exports = function (x) {
 };
 
 
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
 
 var toString = {}.toString;
 
@@ -6467,9 +6302,9 @@ module.exports = Array.isArray || function (arr) {
 };
 
 
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
 
 module.exports = {
 	"methods": {
@@ -7098,24 +6933,9 @@ module.exports = {
 	}
 };
 
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(setImmediate) {'use strict';
-module.exports = typeof setImmediate === 'function' ? setImmediate :
-	function setImmediate() {
-		var args = [].slice.apply(arguments);
-		args.splice(1, 0, 0);
-		setTimeout.apply(null, args);
-	};
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).setImmediate))
-
-/***/ },
-/* 17 */
-/***/ function(module, exports) {
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -7303,34 +7123,287 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 
-/***/ },
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(setImmediate) {
+module.exports = typeof setImmediate === 'function' ? setImmediate :
+	function setImmediate() {
+		var args = [].slice.apply(arguments);
+		args.splice(1, 0, 0);
+		setTimeout.apply(null, args);
+	};
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18).setImmediate))
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(15)))
+
+/***/ }),
 /* 18 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-var g;
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
 
-// This works in non-strict mode
-g = (function() { return this; })();
+// DOM APIs, for completeness
 
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
 }
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
 
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
 
-module.exports = g;
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
 
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
 
-/***/ },
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(17);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
 /* 19 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 module.exports = function(module) {
 	if(!module.webpackPolyfill) {
@@ -7340,22 +7413,144 @@ module.exports = function(module) {
 		if(!module.children) module.children = [];
 		Object.defineProperty(module, "loaded", {
 			enumerable: true,
-			configurable: false,
-			get: function() { return module.l; }
+			get: function() {
+				return module.l;
+			}
 		});
 		Object.defineProperty(module, "id", {
 			enumerable: true,
-			configurable: false,
-			get: function() { return module.i; }
+			get: function() {
+				return module.i;
+			}
 		});
 		module.webpackPolyfill = 1;
 	}
 	return module;
+};
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var format = __webpack_require__(5);
+var EthRPC = __webpack_require__(6);
+var promiseToCallback = __webpack_require__(2);
+
+module.exports = Eth;
+
+function Eth(provider, options) {
+  var self = this;
+  var optionsObject = options || {};
+
+  if (!(this instanceof Eth)) {
+    throw new Error('[ethjs-query] the Eth object requires the "new" flag in order to function normally (i.e. `const eth = new Eth(provider);`).');
+  }
+  if (typeof provider !== 'object') {
+    throw new Error('[ethjs-query] the Eth object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new Eth(provider);\')');
+  }
+
+  self.options = Object.assign({
+    debug: optionsObject.debug || false,
+    logger: optionsObject.logger || console,
+    jsonSpace: optionsObject.jsonSpace || 0
+  });
+  self.rpc = new EthRPC(provider);
+  self.setProvider = self.rpc.setProvider;
 }
 
+Eth.prototype.log = function log(message) {
+  var self = this;
+  if (self.options.debug) self.options.logger.log('[ethjs-query log] ' + message);
+};
 
-/***/ }
-/******/ ])
+Object.keys(format.schema.methods).forEach(function (rpcMethodName) {
+  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
+    enumerable: true,
+    value: generateFnFor(rpcMethodName, format.schema.methods[rpcMethodName])
+  });
 });
-;
+
+function generateFnFor(rpcMethodName, methodObject) {
+  return function outputMethod() {
+    var callback = null; // eslint-disable-line
+    var inputs = null; // eslint-disable-line
+    var inputError = null; // eslint-disable-line
+    var self = this;
+    var args = [].slice.call(arguments); // eslint-disable-line
+    var protoMethodName = rpcMethodName.replace('eth_', ''); // eslint-disable-line
+
+    if (args.length > 0 && typeof args[args.length - 1] === 'function') {
+      callback = args.pop();
+    }
+
+    var promise = performCall.call(this);
+
+    // if callback provided, convert promise to callback
+    if (callback) {
+      return promiseToCallback(promise)(callback);
+    }
+
+    // only return promise if no callback provided
+    return promise;
+
+    function performCall() {
+      var _this = this;
+
+      return new Promise(function (resolve, reject) {
+        // validate arg length
+        if (args.length < methodObject[2]) {
+          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at least ' + methodObject[2] + ' input (format type ' + methodObject[0][0] + '), ' + args.length + ' provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
+          return;
+        }
+        if (args.length > methodObject[0].length) {
+          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at most ' + methodObject[0].length + ' params, ' + args.length + ' provided \'' + JSON.stringify(args, null, self.options.jsonSpace) + '\'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
+          return;
+        }
+
+        // set default block
+        if (methodObject[3] && args.length < methodObject[3]) {
+          args.push('latest');
+        }
+
+        // format inputs
+        _this.log('attempting method formatting for \'' + protoMethodName + '\' with inputs ' + JSON.stringify(args, null, _this.options.jsonSpace));
+        try {
+          inputs = format.formatInputs(rpcMethodName, args);
+          _this.log('method formatting success for \'' + protoMethodName + '\' with formatted result: ' + JSON.stringify(inputs, null, _this.options.jsonSpace));
+        } catch (formattingError) {
+          reject(new Error('[ethjs-query] while formatting inputs \'' + JSON.stringify(args, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' error: ' + formattingError));
+          return;
+        }
+
+        // perform rpc call
+        _this.rpc.sendAsync({ method: rpcMethodName, params: inputs }).then(function (result) {
+          // format result
+          try {
+            _this.log('attempting method formatting for \'' + protoMethodName + '\' with raw outputs: ' + JSON.stringify(result, null, _this.options.jsonSpace));
+            var methodOutputs = format.formatOutputs(rpcMethodName, result);
+            _this.log('method formatting success for \'' + protoMethodName + '\' formatted result: ' + JSON.stringify(methodOutputs, null, _this.options.jsonSpace));
+            resolve(methodOutputs);
+            return;
+          } catch (outputFormattingError) {
+            var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(result, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' ' + outputFormattingError);
+            reject(outputError);
+            return;
+          }
+        })['catch'](function (error) {
+          var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(error, null, _this.options.jsonSpace) + '\'');
+          reject(outputError);
+          return;
+        });
+      });
+    }
+  };
+}
+
+/***/ })
+/******/ ]);
+});
 //# sourceMappingURL=ethjs-query.js.map
