@@ -8,7 +8,7 @@
 		exports["Eth"] = factory();
 	else
 		root["Eth"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -17,9 +17,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -43,9 +43,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
@@ -74,33 +71,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isHexPrefixed = __webpack_require__(3);
-
-/**
- * Removes '0x' from a given `String` is present
- * @param {String} str the string value
- * @return {String|Optional} a string by pass if necessary
- */
-module.exports = function stripHexPrefix(str) {
-  if (typeof str !== 'string') {
-    return str;
-  }
-
-  return isHexPrefixed(str) ? str.slice(2) : str;
-};
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports) {
 
 var g;
@@ -127,52 +102,29 @@ module.exports = g;
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var isFn = __webpack_require__(13);
-var setImmediate = __webpack_require__(17);
 
-module.exports = function (promise) {
-	if (!isFn(promise.then)) {
-		throw new TypeError('Expected a promise');
-	}
-
-	return function (cb) {
-		promise.then(function (data) {
-			setImmediate(cb, null, data);
-		}, function (err) {
-			setImmediate(cb, err);
-		});
-	};
-};
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+var isHexPrefixed = __webpack_require__(3);
 
 /**
- * Returns a `Boolean` on whether or not the a `String` starts with '0x'
- * @param {String} str the string input value
- * @return {Boolean} a boolean if it is or is not hex prefixed
- * @throws if the str input is not a string
+ * Removes '0x' from a given `String` is present
+ * @param {String} str the string value
+ * @return {String|Optional} a string by pass if necessary
  */
-module.exports = function isHexPrefixed(str) {
+module.exports = function stripHexPrefix(str) {
   if (typeof str !== 'string') {
-    throw new Error("[is-hex-prefixed] value must be type 'string', is currently type " + typeof str + ", while checking isHexPrefixed.");
+    return str;
   }
 
-  return str.slice(0, 2) === '0x';
+  return isHexPrefixed(str) ? str.slice(2) : str;
 };
 
 /***/ }),
-/* 4 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -187,8 +139,8 @@ module.exports = function isHexPrefixed(str) {
 
 
 var base64 = __webpack_require__(9)
-var ieee754 = __webpack_require__(12)
-var isArray = __webpack_require__(14)
+var ieee754 = __webpack_require__(10)
+var isArray = __webpack_require__(11)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -1966,7 +1918,52 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Returns a `Boolean` on whether or not the a `String` starts with '0x'
+ * @param {String} str the string input value
+ * @return {Boolean} a boolean if it is or is not hex prefixed
+ * @throws if the str input is not a string
+ */
+module.exports = function isHexPrefixed(str) {
+  if (typeof str !== 'string') {
+    throw new Error("[is-hex-prefixed] value must be type 'string', is currently type " + typeof str + ", while checking isHexPrefixed.");
+  }
+
+  return str.slice(0, 2) === '0x';
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var isFn = __webpack_require__(16);
+var setImmediate = __webpack_require__(17);
+
+module.exports = function (promise) {
+	if (!isFn(promise.then)) {
+		throw new TypeError('Expected a promise');
+	}
+
+	return function (cb) {
+		promise.then(function (data) {
+			setImmediate(cb, null, data);
+		}, function (err) {
+			setImmediate(cb, err);
+		});
+	};
+};
+
 
 /***/ }),
 /* 5 */
@@ -1975,10 +1972,131 @@ function isnan (val) {
 "use strict";
 
 
-var schema = __webpack_require__(15);
-var util = __webpack_require__(11);
-var numberToBN = __webpack_require__(8);
-var stripHexPrefix = __webpack_require__(0);
+var format = __webpack_require__(6);
+var EthRPC = __webpack_require__(15);
+var promiseToCallback = __webpack_require__(4);
+
+module.exports = Eth;
+
+function Eth(provider, options) {
+  var self = this;
+  var optionsObject = options || {};
+
+  if (!(this instanceof Eth)) {
+    throw new Error('[ethjs-query] the Eth object requires the "new" flag in order to function normally (i.e. `const eth = new Eth(provider);`).');
+  }
+  if (typeof provider !== 'object') {
+    throw new Error('[ethjs-query] the Eth object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new Eth(provider);\')');
+  }
+
+  self.options = Object.assign({
+    debug: optionsObject.debug || false,
+    logger: optionsObject.logger || console,
+    jsonSpace: optionsObject.jsonSpace || 0
+  });
+  self.rpc = new EthRPC(provider);
+  self.setProvider = self.rpc.setProvider;
+}
+
+Eth.prototype.log = function log(message) {
+  var self = this;
+  if (self.options.debug) self.options.logger.log('[ethjs-query log] ' + message);
+};
+
+Object.keys(format.schema.methods).forEach(function (rpcMethodName) {
+  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
+    enumerable: true,
+    value: generateFnFor(rpcMethodName, format.schema.methods[rpcMethodName])
+  });
+});
+
+function generateFnFor(rpcMethodName, methodObject) {
+  return function outputMethod() {
+    var callback = null; // eslint-disable-line
+    var inputs = null; // eslint-disable-line
+    var inputError = null; // eslint-disable-line
+    var self = this;
+    var args = [].slice.call(arguments); // eslint-disable-line
+    var protoMethodName = rpcMethodName.replace('eth_', ''); // eslint-disable-line
+
+    if (args.length > 0 && typeof args[args.length - 1] === 'function') {
+      callback = args.pop();
+    }
+
+    var promise = performCall.call(this);
+
+    // if callback provided, convert promise to callback
+    if (callback) {
+      return promiseToCallback(promise)(callback);
+    }
+
+    // only return promise if no callback provided
+    return promise;
+
+    function performCall() {
+      var _this = this;
+
+      return new Promise(function (resolve, reject) {
+        // validate arg length
+        if (args.length < methodObject[2]) {
+          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at least ' + methodObject[2] + ' input (format type ' + methodObject[0][0] + '), ' + args.length + ' provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
+          return;
+        }
+        if (args.length > methodObject[0].length) {
+          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at most ' + methodObject[0].length + ' params, ' + args.length + ' provided \'' + JSON.stringify(args, null, self.options.jsonSpace) + '\'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
+          return;
+        }
+
+        // set default block
+        if (methodObject[3] && args.length < methodObject[3]) {
+          args.push('latest');
+        }
+
+        // format inputs
+        _this.log('attempting method formatting for \'' + protoMethodName + '\' with inputs ' + JSON.stringify(args, null, _this.options.jsonSpace));
+        try {
+          inputs = format.formatInputs(rpcMethodName, args);
+          _this.log('method formatting success for \'' + protoMethodName + '\' with formatted result: ' + JSON.stringify(inputs, null, _this.options.jsonSpace));
+        } catch (formattingError) {
+          reject(new Error('[ethjs-query] while formatting inputs \'' + JSON.stringify(args, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' error: ' + formattingError));
+          return;
+        }
+
+        // perform rpc call
+        _this.rpc.sendAsync({ method: rpcMethodName, params: inputs }).then(function (result) {
+          // format result
+          try {
+            _this.log('attempting method formatting for \'' + protoMethodName + '\' with raw outputs: ' + JSON.stringify(result, null, _this.options.jsonSpace));
+            var methodOutputs = format.formatOutputs(rpcMethodName, result);
+            _this.log('method formatting success for \'' + protoMethodName + '\' formatted result: ' + JSON.stringify(methodOutputs, null, _this.options.jsonSpace));
+            resolve(methodOutputs);
+            return;
+          } catch (outputFormattingError) {
+            var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(result, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' ' + outputFormattingError);
+            reject(outputError);
+            return;
+          }
+        })['catch'](function (error) {
+          var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(error, null, _this.options.jsonSpace) + '\'');
+          reject(outputError);
+          return;
+        });
+      });
+    }
+  };
+}
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var schema = __webpack_require__(7);
+var util = __webpack_require__(8);
+var numberToBN = __webpack_require__(12);
+var stripHexPrefix = __webpack_require__(1);
 var padToEven = util.padToEven;
 var arrayContainsArray = util.arrayContainsArray;
 var getBinarySize = util.getBinarySize;
@@ -2229,266 +2347,862 @@ module.exports = {
 };
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var promiseToCallback = __webpack_require__(2);
-
-module.exports = EthRPC;
-
-/**
- * Constructs the EthRPC instance
- *
- * @method EthRPC
- * @param {Object} cprovider the eth rpc provider web3 standard..
- * @param {Object} options the options, if any
- * @returns {Object} ethrpc instance
- */
-function EthRPC(cprovider, options) {
-  var self = this;
-  var optionsObject = options || {};
-
-  if (!(this instanceof EthRPC)) {
-    throw new Error('[ethjs-rpc] the EthRPC object requires the "new" flag in order to function normally (i.e. `const eth = new EthRPC(provider);`).');
-  }
-
-  self.options = Object.assign({
-    jsonSpace: optionsObject.jsonSpace || 0,
-    max: optionsObject.max || 9999999999999
-  });
-  self.idCounter = Math.floor(Math.random() * self.options.max);
-  self.setProvider = function (provider) {
-    if (typeof provider !== 'object') {
-      throw new Error('[ethjs-rpc] the EthRPC object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new EthRPC(provider);\')');
-    }
-
-    self.currentProvider = provider;
-  };
-  self.setProvider(cprovider);
-}
-
-/**
- * The main send async method
- *
- * @method sendAsync
- * @param {Object} payload the rpc payload object
- * @param {Function} cb the async standard callback
- * @callback {Object|Array|Boolean|String} vary result instance output
- */
-EthRPC.prototype.sendAsync = function sendAsync(payload, callback) {
-  var self = this;
-  self.idCounter = self.idCounter % self.options.max;
-  var parsedPayload = createPayload(payload, self.idCounter++);
-
-  var promise = new Promise(function (resolve, reject) {
-    self.currentProvider.sendAsync(parsedPayload, function (err, response) {
-      var responseObject = response || {};
-
-      if (err || responseObject.error) {
-        var payloadErrorMessage = '[ethjs-rpc] ' + (responseObject.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(parsedPayload, null, self.options.jsonSpace) + ' ' + (err ? String(err) : JSON.stringify(responseObject.error, null, self.options.jsonSpace));
-        var payloadError = new Error(payloadErrorMessage);
-        payloadError.value = err || responseObject.error;
-        reject(payloadError);
-        return;
-      }
-
-      resolve(responseObject.result);
-      return;
-    });
-  });
-
-  if (callback) {
-    // connect promise resolve handlers to callback
-    return promiseToCallback(promise)(callback);
-  }
-
-  // only return promise if no callback specified
-  return promise;
-};
-
-/**
- * A simple create payload method
- *
- * @method createPayload
- * @param {Object} data the rpc payload data
- * @param {String} id the rpc data payload ID
- * @returns {Object} payload the completed payload object
- */
-function createPayload(data, id) {
-  return Object.assign({}, {
-    id: id,
-    jsonrpc: '2.0',
-    params: []
-  }, data);
-}
-
-/***/ }),
 /* 7 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var format = __webpack_require__(5);
-var EthRPC = __webpack_require__(6);
-var promiseToCallback = __webpack_require__(2);
-
-module.exports = Eth;
-
-function Eth(provider, options) {
-  var self = this;
-  var optionsObject = options || {};
-
-  if (!(this instanceof Eth)) {
-    throw new Error('[ethjs-query] the Eth object requires the "new" flag in order to function normally (i.e. `const eth = new Eth(provider);`).');
-  }
-  if (typeof provider !== 'object') {
-    throw new Error('[ethjs-query] the Eth object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new Eth(provider);\')');
-  }
-
-  self.options = Object.assign({
-    debug: optionsObject.debug || false,
-    logger: optionsObject.logger || console,
-    jsonSpace: optionsObject.jsonSpace || 0
-  });
-  self.rpc = new EthRPC(provider);
-  self.setProvider = self.rpc.setProvider;
-}
-
-Eth.prototype.log = function log(message) {
-  var self = this;
-  if (self.options.debug) self.options.logger.log('[ethjs-query log] ' + message);
+module.exports = {
+	"methods": {
+		"web3_clientVersion": [
+			[],
+			"S"
+		],
+		"web3_sha3": [
+			[
+				"S"
+			],
+			"D",
+			1
+		],
+		"net_version": [
+			[],
+			"S"
+		],
+		"net_peerCount": [
+			[],
+			"Q"
+		],
+		"net_listening": [
+			[],
+			"B"
+		],
+		"personal_sign": [
+			[
+				"D",
+				"D20",
+				"S"
+			],
+			"D",
+			2
+		],
+		"personal_ecRecover": [
+			[
+				"D",
+				"D"
+			],
+			"D20",
+			2
+		],
+		"eth_protocolVersion": [
+			[],
+			"S"
+		],
+		"eth_syncing": [
+			[],
+			"B|EthSyncing"
+		],
+		"eth_coinbase": [
+			[],
+			"D20"
+		],
+		"eth_mining": [
+			[],
+			"B"
+		],
+		"eth_hashrate": [
+			[],
+			"Q"
+		],
+		"eth_gasPrice": [
+			[],
+			"Q"
+		],
+		"eth_accounts": [
+			[],
+			[
+				"D20"
+			]
+		],
+		"eth_blockNumber": [
+			[],
+			"Q"
+		],
+		"eth_getBalance": [
+			[
+				"D20",
+				"Q|T"
+			],
+			"Q",
+			1,
+			2
+		],
+		"eth_getStorageAt": [
+			[
+				"D20",
+				"Q",
+				"Q|T"
+			],
+			"D",
+			2,
+			2
+		],
+		"eth_getTransactionCount": [
+			[
+				"D20",
+				"Q|T"
+			],
+			"Q",
+			1,
+			2
+		],
+		"eth_getBlockTransactionCountByHash": [
+			[
+				"D32"
+			],
+			"Q",
+			1
+		],
+		"eth_getBlockTransactionCountByNumber": [
+			[
+				"Q|T"
+			],
+			"Q",
+			1
+		],
+		"eth_getUncleCountByBlockHash": [
+			[
+				"D32"
+			],
+			"Q",
+			1
+		],
+		"eth_getUncleCountByBlockNumber": [
+			[
+				"Q"
+			],
+			"Q",
+			1
+		],
+		"eth_getCode": [
+			[
+				"D20",
+				"Q|T"
+			],
+			"D",
+			1,
+			2
+		],
+		"eth_sign": [
+			[
+				"D20",
+				"D"
+			],
+			"D",
+			2
+		],
+		"eth_signTypedData": [
+			[
+				"Array|DATA",
+				"D20"
+			],
+			"D",
+			1
+		],
+		"eth_sendTransaction": [
+			[
+				"SendTransaction"
+			],
+			"D",
+			1
+		],
+		"eth_sendRawTransaction": [
+			[
+				"D"
+			],
+			"D32",
+			1
+		],
+		"eth_call": [
+			[
+				"CallTransaction",
+				"Q|T"
+			],
+			"D",
+			1,
+			2
+		],
+		"eth_estimateGas": [
+			[
+				"EstimateTransaction",
+				"Q|T"
+			],
+			"Q",
+			1
+		],
+		"eth_getBlockByHash": [
+			[
+				"D32",
+				"B"
+			],
+			"Block",
+			2
+		],
+		"eth_getBlockByNumber": [
+			[
+				"Q|T",
+				"B"
+			],
+			"Block",
+			2
+		],
+		"eth_getTransactionByHash": [
+			[
+				"D32"
+			],
+			"Transaction",
+			1
+		],
+		"eth_getTransactionByBlockHashAndIndex": [
+			[
+				"D32",
+				"Q"
+			],
+			"Transaction",
+			2
+		],
+		"eth_getTransactionByBlockNumberAndIndex": [
+			[
+				"Q|T",
+				"Q"
+			],
+			"Transaction",
+			2
+		],
+		"eth_getTransactionReceipt": [
+			[
+				"D32"
+			],
+			"Receipt",
+			1
+		],
+		"eth_getUncleByBlockHashAndIndex": [
+			[
+				"D32",
+				"Q"
+			],
+			"Block",
+			1
+		],
+		"eth_getUncleByBlockNumberAndIndex": [
+			[
+				"Q|T",
+				"Q"
+			],
+			"Block",
+			2
+		],
+		"eth_getCompilers": [
+			[],
+			[
+				"S"
+			]
+		],
+		"eth_compileLLL": [
+			[
+				"S"
+			],
+			"D",
+			1
+		],
+		"eth_compileSolidity": [
+			[
+				"S"
+			],
+			"D",
+			1
+		],
+		"eth_compileSerpent": [
+			[
+				"S"
+			],
+			"D",
+			1
+		],
+		"eth_newFilter": [
+			[
+				"Filter"
+			],
+			"Q",
+			1
+		],
+		"eth_newBlockFilter": [
+			[],
+			"Q"
+		],
+		"eth_newPendingTransactionFilter": [
+			[],
+			"Q"
+		],
+		"eth_uninstallFilter": [
+			[
+				"QP"
+			],
+			"B",
+			1
+		],
+		"eth_getFilterChanges": [
+			[
+				"QP"
+			],
+			[
+				"FilterChange"
+			],
+			1
+		],
+		"eth_getFilterLogs": [
+			[
+				"QP"
+			],
+			[
+				"FilterChange"
+			],
+			1
+		],
+		"eth_getLogs": [
+			[
+				"Filter"
+			],
+			[
+				"FilterChange"
+			],
+			1
+		],
+		"eth_getWork": [
+			[],
+			[
+				"D"
+			]
+		],
+		"eth_submitWork": [
+			[
+				"D",
+				"D32",
+				"D32"
+			],
+			"B",
+			3
+		],
+		"eth_submitHashrate": [
+			[
+				"D",
+				"D"
+			],
+			"B",
+			2
+		],
+		"db_putString": [
+			[
+				"S",
+				"S",
+				"S"
+			],
+			"B",
+			2
+		],
+		"db_getString": [
+			[
+				"S",
+				"S"
+			],
+			"S",
+			2
+		],
+		"db_putHex": [
+			[
+				"S",
+				"S",
+				"D"
+			],
+			"B",
+			2
+		],
+		"db_getHex": [
+			[
+				"S",
+				"S"
+			],
+			"D",
+			2
+		],
+		"shh_post": [
+			[
+				"SHHPost"
+			],
+			"B",
+			1
+		],
+		"shh_version": [
+			[],
+			"S"
+		],
+		"shh_newIdentity": [
+			[],
+			"D"
+		],
+		"shh_hasIdentity": [
+			[
+				"D"
+			],
+			"B"
+		],
+		"shh_newGroup": [
+			[],
+			"D"
+		],
+		"shh_addToGroup": [
+			[
+				"D"
+			],
+			"B",
+			1
+		],
+		"shh_newFilter": [
+			[
+				"SHHFilter"
+			],
+			"Q",
+			1
+		],
+		"shh_uninstallFilter": [
+			[
+				"Q"
+			],
+			"B",
+			1
+		],
+		"shh_getFilterChanges": [
+			[
+				"Q"
+			],
+			[
+				"SHHFilterChange"
+			],
+			1
+		],
+		"shh_getMessages": [
+			[
+				"Q"
+			],
+			[
+				"SHHFilterChange"
+			],
+			1
+		]
+	},
+	"tags": [
+		"latest",
+		"earliest",
+		"pending"
+	],
+	"objects": {
+		"EthSyncing": {
+			"__required": [],
+			"startingBlock": "Q",
+			"currentBlock": "Q",
+			"highestBlock": "Q"
+		},
+		"SendTransaction": {
+			"__required": [
+				"from",
+				"data"
+			],
+			"from": "D20",
+			"to": "D20",
+			"gas": "Q",
+			"gasPrice": "Q",
+			"value": "Q",
+			"data": "D",
+			"nonce": "Q"
+		},
+		"EstimateTransaction": {
+			"__required": [],
+			"from": "D20",
+			"to": "D20",
+			"gas": "Q",
+			"gasPrice": "Q",
+			"value": "Q",
+			"data": "D",
+			"nonce": "Q"
+		},
+		"CallTransaction": {
+			"__required": [
+				"to"
+			],
+			"from": "D20",
+			"to": "D20",
+			"gas": "Q",
+			"gasPrice": "Q",
+			"value": "Q",
+			"data": "D",
+			"nonce": "Q"
+		},
+		"Block": {
+			"__required": [],
+			"number": "Q",
+			"hash": "D32",
+			"parentHash": "D32",
+			"nonce": "D",
+			"sha3Uncles": "D",
+			"logsBloom": "D",
+			"transactionsRoot": "D",
+			"stateRoot": "D",
+			"receiptsRoot": "D",
+			"miner": "D",
+			"difficulty": "Q",
+			"totalDifficulty": "Q",
+			"extraData": "D",
+			"size": "Q",
+			"gasLimit": "Q",
+			"gasUsed": "Q",
+			"timestamp": "Q",
+			"transactions": [
+				"DATA|Transaction"
+			],
+			"uncles": [
+				"D"
+			]
+		},
+		"Transaction": {
+			"__required": [],
+			"hash": "D32",
+			"nonce": "Q",
+			"blockHash": "D32",
+			"blockNumber": "Q",
+			"transactionIndex": "Q",
+			"from": "D20",
+			"to": "D20",
+			"value": "Q",
+			"gasPrice": "Q",
+			"gas": "Q",
+			"input": "D"
+		},
+		"Receipt": {
+			"__required": [],
+			"transactionHash": "D32",
+			"transactionIndex": "Q",
+			"blockHash": "D32",
+			"blockNumber": "Q",
+			"cumulativeGasUsed": "Q",
+			"gasUsed": "Q",
+			"contractAddress": "D20",
+			"logs": [
+				"FilterChange"
+			]
+		},
+		"Filter": {
+			"__required": [],
+			"fromBlock": "Q|T",
+			"toBlock": "Q|T",
+			"address": "D20",
+			"topics": [
+				"D"
+			]
+		},
+		"FilterChange": {
+			"__required": [],
+			"removed": "B",
+			"logIndex": "Q",
+			"transactionIndex": "Q",
+			"transactionHash": "D32",
+			"blockHash": "D32",
+			"blockNumber": "Q",
+			"address": "D20",
+			"data": "Array|DATA",
+			"topics": [
+				"D"
+			]
+		},
+		"SHHPost": {
+			"__required": [
+				"topics",
+				"payload",
+				"priority",
+				"ttl"
+			],
+			"from": "D",
+			"to": "D",
+			"topics": [
+				"D"
+			],
+			"payload": "D",
+			"priority": "Q",
+			"ttl": "Q"
+		},
+		"SHHFilter": {
+			"__required": [
+				"topics"
+			],
+			"to": "D",
+			"topics": [
+				"D"
+			]
+		},
+		"SHHFilterChange": {
+			"__required": [],
+			"hash": "D",
+			"from": "D",
+			"to": "D",
+			"expiry": "Q",
+			"ttl": "Q",
+			"sent": "Q",
+			"topics": [
+				"D"
+			],
+			"payload": "D",
+			"workProved": "Q"
+		},
+		"SHHMessage": {
+			"__required": [],
+			"hash": "D",
+			"from": "D",
+			"to": "D",
+			"expiry": "Q",
+			"ttl": "Q",
+			"sent": "Q",
+			"topics": [
+				"D"
+			],
+			"payload": "D",
+			"workProved": "Q"
+		}
+	}
 };
-
-Object.keys(format.schema.methods).forEach(function (rpcMethodName) {
-  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
-    enumerable: true,
-    value: generateFnFor(rpcMethodName, format.schema.methods[rpcMethodName])
-  });
-});
-
-function generateFnFor(rpcMethodName, methodObject) {
-  return function outputMethod() {
-    var callback = null; // eslint-disable-line
-    var inputs = null; // eslint-disable-line
-    var inputError = null; // eslint-disable-line
-    var self = this;
-    var args = [].slice.call(arguments); // eslint-disable-line
-    var protoMethodName = rpcMethodName.replace('eth_', ''); // eslint-disable-line
-
-    if (args.length > 0 && typeof args[args.length - 1] === 'function') {
-      callback = args.pop();
-    }
-
-    var promise = performCall.call(this);
-
-    // if callback provided, convert promise to callback
-    if (callback) {
-      return promiseToCallback(promise)(callback);
-    }
-
-    // only return promise if no callback provided
-    return promise;
-
-    function performCall() {
-      var _this = this;
-
-      return new Promise(function (resolve, reject) {
-        // validate arg length
-        if (args.length < methodObject[2]) {
-          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at least ' + methodObject[2] + ' input (format type ' + methodObject[0][0] + '), ' + args.length + ' provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
-          return;
-        }
-        if (args.length > methodObject[0].length) {
-          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at most ' + methodObject[0].length + ' params, ' + args.length + ' provided \'' + JSON.stringify(args, null, self.options.jsonSpace) + '\'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
-          return;
-        }
-
-        // set default block
-        if (methodObject[3] && args.length < methodObject[3]) {
-          args.push('latest');
-        }
-
-        // format inputs
-        _this.log('attempting method formatting for \'' + protoMethodName + '\' with inputs ' + JSON.stringify(args, null, _this.options.jsonSpace));
-        try {
-          inputs = format.formatInputs(rpcMethodName, args);
-          _this.log('method formatting success for \'' + protoMethodName + '\' with formatted result: ' + JSON.stringify(inputs, null, _this.options.jsonSpace));
-        } catch (formattingError) {
-          reject(new Error('[ethjs-query] while formatting inputs \'' + JSON.stringify(args, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' error: ' + formattingError));
-          return;
-        }
-
-        // perform rpc call
-        _this.rpc.sendAsync({ method: rpcMethodName, params: inputs }).then(function (result) {
-          // format result
-          try {
-            _this.log('attempting method formatting for \'' + protoMethodName + '\' with raw outputs: ' + JSON.stringify(result, null, _this.options.jsonSpace));
-            var methodOutputs = format.formatOutputs(rpcMethodName, result);
-            _this.log('method formatting success for \'' + protoMethodName + '\' formatted result: ' + JSON.stringify(methodOutputs, null, _this.options.jsonSpace));
-            resolve(methodOutputs);
-            return;
-          } catch (outputFormattingError) {
-            var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(result, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' ' + outputFormattingError);
-            reject(outputError);
-            return;
-          }
-        })['catch'](function (error) {
-          var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(error, null, _this.options.jsonSpace) + '\'');
-          reject(outputError);
-          return;
-        });
-      });
-    }
-  };
-}
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(Buffer) {
 
-
-var BN = __webpack_require__(10);
-var stripHexPrefix = __webpack_require__(0);
+var isHexPrefixed = __webpack_require__(3);
+var stripHexPrefix = __webpack_require__(1);
 
 /**
- * Returns a BN object, converts a number value to a BN
- * @param {String|Number|Object} `arg` input a string number, hex string number, number, BigNumber or BN object
- * @return {Object} `output` BN object of the number
- * @throws if the argument is not an array, object that isn't a bignumber, not a string number or number
+ * Pads a `String` to have an even length
+ * @param {String} value
+ * @return {String} output
  */
-module.exports = function numberToBN(arg) {
-  if (typeof arg === 'string' || typeof arg === 'number') {
-    var multiplier = new BN(1); // eslint-disable-line
-    var formattedString = String(arg).toLowerCase().trim();
-    var isHexPrefixed = formattedString.substr(0, 2) === '0x' || formattedString.substr(0, 3) === '-0x';
-    var stringArg = stripHexPrefix(formattedString); // eslint-disable-line
-    if (stringArg.substr(0, 1) === '-') {
-      stringArg = stripHexPrefix(stringArg.slice(1));
-      multiplier = new BN(-1, 10);
-    }
-    stringArg = stringArg === '' ? '0' : stringArg;
+function padToEven(value) {
+  var a = value; // eslint-disable-line
 
-    if (!stringArg.match(/^-?[0-9]+$/) && stringArg.match(/^[0-9A-Fa-f]+$/) || stringArg.match(/^[a-fA-F]+$/) || isHexPrefixed === true && stringArg.match(/^[0-9A-Fa-f]+$/)) {
-      return new BN(stringArg, 16).mul(multiplier);
-    }
-
-    if ((stringArg.match(/^-?[0-9]+$/) || stringArg === '') && isHexPrefixed === false) {
-      return new BN(stringArg, 10).mul(multiplier);
-    }
-  } else if (typeof arg === 'object' && arg.toString && !arg.pop && !arg.push) {
-    if (arg.toString(10).match(/^-?[0-9]+$/) && (arg.mul || arg.dividedToIntegerBy)) {
-      return new BN(arg.toString(10), 10);
-    }
+  if (typeof a !== 'string') {
+    throw new Error('[ethjs-util] while padding to even, value must be string, is currently ' + typeof a + ', while padToEven.');
   }
 
-  throw new Error('[number-to-bn] while converting number ' + JSON.stringify(arg) + ' to BN.js instance, error: invalid number value. Value must be an integer, hex string, BN or BigNumber instance. Note, decimals are not supported.');
+  if (a.length % 2) {
+    a = '0' + a;
+  }
+
+  return a;
+}
+
+/**
+ * Converts a `Number` into a hex `String`
+ * @param {Number} i
+ * @return {String}
+ */
+function intToHex(i) {
+  var hex = i.toString(16); // eslint-disable-line
+
+  return '0x' + padToEven(hex);
+}
+
+/**
+ * Converts an `Number` to a `Buffer`
+ * @param {Number} i
+ * @return {Buffer}
+ */
+function intToBuffer(i) {
+  var hex = intToHex(i);
+
+  return Buffer.from(hex.slice(2), 'hex');
+}
+
+/**
+ * Get the binary size of a string
+ * @param {String} str
+ * @return {Number}
+ */
+function getBinarySize(str) {
+  if (typeof str !== 'string') {
+    throw new Error('[ethjs-util] while getting binary size, method getBinarySize requires input \'str\' to be type String, got \'' + typeof str + '\'.');
+  }
+
+  return Buffer.byteLength(str, 'utf8');
+}
+
+/**
+ * Returns TRUE if the first specified array contains all elements
+ * from the second one. FALSE otherwise.
+ *
+ * @param {array} superset
+ * @param {array} subset
+ *
+ * @returns {boolean}
+ */
+function arrayContainsArray(superset, subset, some) {
+  if (Array.isArray(superset) !== true) {
+    throw new Error('[ethjs-util] method arrayContainsArray requires input \'superset\' to be an array got type \'' + typeof superset + '\'');
+  }
+  if (Array.isArray(subset) !== true) {
+    throw new Error('[ethjs-util] method arrayContainsArray requires input \'subset\' to be an array got type \'' + typeof subset + '\'');
+  }
+
+  return subset[Boolean(some) && 'some' || 'every'](function (value) {
+    return superset.indexOf(value) >= 0;
+  });
+}
+
+/**
+ * Should be called to get utf8 from it's hex representation
+ *
+ * @method toUtf8
+ * @param {String} string in hex
+ * @returns {String} ascii string representation of hex value
+ */
+function toUtf8(hex) {
+  var bufferValue = new Buffer(padToEven(stripHexPrefix(hex).replace(/^0+|0+$/g, '')), 'hex');
+
+  return bufferValue.toString('utf8');
+}
+
+/**
+ * Should be called to get ascii from it's hex representation
+ *
+ * @method toAscii
+ * @param {String} string in hex
+ * @returns {String} ascii string representation of hex value
+ */
+function toAscii(hex) {
+  var str = ''; // eslint-disable-line
+  var i = 0,
+      l = hex.length; // eslint-disable-line
+
+  if (hex.substring(0, 2) === '0x') {
+    i = 2;
+  }
+
+  for (; i < l; i += 2) {
+    var code = parseInt(hex.substr(i, 2), 16);
+    str += String.fromCharCode(code);
+  }
+
+  return str;
+}
+
+/**
+ * Should be called to get hex representation (prefixed by 0x) of utf8 string
+ *
+ * @method fromUtf8
+ * @param {String} string
+ * @param {Number} optional padding
+ * @returns {String} hex representation of input string
+ */
+function fromUtf8(stringValue) {
+  var str = new Buffer(stringValue, 'utf8');
+
+  return '0x' + padToEven(str.toString('hex')).replace(/^0+|0+$/g, '');
+}
+
+/**
+ * Should be called to get hex representation (prefixed by 0x) of ascii string
+ *
+ * @method fromAscii
+ * @param {String} string
+ * @param {Number} optional padding
+ * @returns {String} hex representation of input string
+ */
+function fromAscii(stringValue) {
+  var hex = ''; // eslint-disable-line
+  for (var i = 0; i < stringValue.length; i++) {
+    // eslint-disable-line
+    var code = stringValue.charCodeAt(i);
+    var n = code.toString(16);
+    hex += n.length < 2 ? '0' + n : n;
+  }
+
+  return '0x' + hex;
+}
+
+/**
+ * getKeys([{a: 1, b: 2}, {a: 3, b: 4}], 'a') => [1, 3]
+ *
+ * @method getKeys get specific key from inner object array of objects
+ * @param {String} params
+ * @param {String} key
+ * @param {Boolean} allowEmpty
+ * @returns {Array} output just a simple array of output keys
+ */
+function getKeys(params, key, allowEmpty) {
+  if (!Array.isArray(params)) {
+    throw new Error('[ethjs-util] method getKeys expecting type Array as \'params\' input, got \'' + typeof params + '\'');
+  }
+  if (typeof key !== 'string') {
+    throw new Error('[ethjs-util] method getKeys expecting type String for input \'key\' got \'' + typeof key + '\'.');
+  }
+
+  var result = []; // eslint-disable-line
+
+  for (var i = 0; i < params.length; i++) {
+    // eslint-disable-line
+    var value = params[i][key]; // eslint-disable-line
+    if (allowEmpty && !value) {
+      value = '';
+    } else if (typeof value !== 'string') {
+      throw new Error('invalid abi');
+    }
+    result.push(value);
+  }
+
+  return result;
+}
+
+/**
+ * Is the string a hex string.
+ *
+ * @method check if string is hex string of specific length
+ * @param {String} value
+ * @param {Number} length
+ * @returns {Boolean} output the string is a hex string
+ */
+function isHexString(value, length) {
+  if (typeof value !== 'string' || !value.match(/^0x[0-9A-Fa-f]*$/)) {
+    return false;
+  }
+
+  if (length && value.length !== 2 + 2 * length) {
+    return false;
+  }
+
+  return true;
+}
+
+module.exports = {
+  arrayContainsArray: arrayContainsArray,
+  intToBuffer: intToBuffer,
+  getBinarySize: getBinarySize,
+  isHexPrefixed: isHexPrefixed,
+  stripHexPrefix: stripHexPrefix,
+  padToEven: padToEven,
+  intToHex: intToHex,
+  fromAscii: fromAscii,
+  fromUtf8: fromUtf8,
+  toAscii: toAscii,
+  toUtf8: toUtf8,
+  getKeys: getKeys,
+  isHexString: isHexString
 };
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).Buffer))
 
 /***/ }),
 /* 9 */
@@ -2649,6 +3363,152 @@ function fromByteArray (uint8) {
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports) {
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var BN = __webpack_require__(13);
+var stripHexPrefix = __webpack_require__(1);
+
+/**
+ * Returns a BN object, converts a number value to a BN
+ * @param {String|Number|Object} `arg` input a string number, hex string number, number, BigNumber or BN object
+ * @return {Object} `output` BN object of the number
+ * @throws if the argument is not an array, object that isn't a bignumber, not a string number or number
+ */
+module.exports = function numberToBN(arg) {
+  if (typeof arg === 'string' || typeof arg === 'number') {
+    var multiplier = new BN(1); // eslint-disable-line
+    var formattedString = String(arg).toLowerCase().trim();
+    var isHexPrefixed = formattedString.substr(0, 2) === '0x' || formattedString.substr(0, 3) === '-0x';
+    var stringArg = stripHexPrefix(formattedString); // eslint-disable-line
+    if (stringArg.substr(0, 1) === '-') {
+      stringArg = stripHexPrefix(stringArg.slice(1));
+      multiplier = new BN(-1, 10);
+    }
+    stringArg = stringArg === '' ? '0' : stringArg;
+
+    if (!stringArg.match(/^-?[0-9]+$/) && stringArg.match(/^[0-9A-Fa-f]+$/) || stringArg.match(/^[a-fA-F]+$/) || isHexPrefixed === true && stringArg.match(/^[0-9A-Fa-f]+$/)) {
+      return new BN(stringArg, 16).mul(multiplier);
+    }
+
+    if ((stringArg.match(/^-?[0-9]+$/) || stringArg === '') && isHexPrefixed === false) {
+      return new BN(stringArg, 10).mul(multiplier);
+    }
+  } else if (typeof arg === 'object' && arg.toString && !arg.pop && !arg.push) {
+    if (arg.toString(10).match(/^-?[0-9]+$/) && (arg.mul || arg.dividedToIntegerBy)) {
+      return new BN(arg.toString(10), 10);
+    }
+  }
+
+  throw new Error('[number-to-bn] while converting number ' + JSON.stringify(arg) + ' to BN.js instance, error: invalid number value. Value must be an integer, hex string, BN or BigNumber instance. Note, decimals are not supported.');
+};
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -2703,7 +3563,7 @@ function fromByteArray (uint8) {
 
   var Buffer;
   try {
-    Buffer = __webpack_require__(4).Buffer;
+    Buffer = __webpack_require__(2).Buffer;
   } catch (e) {
   }
 
@@ -6079,328 +6939,135 @@ function fromByteArray (uint8) {
   };
 })(typeof module === 'undefined' || module, this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)(module)))
 
 /***/ }),
-/* 11 */
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var isHexPrefixed = __webpack_require__(3);
-var stripHexPrefix = __webpack_require__(0);
 
-/**
- * Pads a `String` to have an even length
- * @param {String} value
- * @return {String} output
- */
-function padToEven(value) {
-  var a = value; // eslint-disable-line
+var promiseToCallback = __webpack_require__(4);
 
-  if (typeof a !== 'string') {
-    throw new Error('[ethjs-util] while padding to even, value must be string, is currently ' + typeof a + ', while padToEven.');
-  }
-
-  if (a.length % 2) {
-    a = '0' + a;
-  }
-
-  return a;
-}
+module.exports = EthRPC;
 
 /**
- * Converts a `Number` into a hex `String`
- * @param {Number} i
- * @return {String}
- */
-function intToHex(i) {
-  var hex = i.toString(16); // eslint-disable-line
-
-  return '0x' + padToEven(hex);
-}
-
-/**
- * Converts an `Number` to a `Buffer`
- * @param {Number} i
- * @return {Buffer}
- */
-function intToBuffer(i) {
-  var hex = intToHex(i);
-
-  return Buffer.from(hex.slice(2), 'hex');
-}
-
-/**
- * Get the binary size of a string
- * @param {String} str
- * @return {Number}
- */
-function getBinarySize(str) {
-  if (typeof str !== 'string') {
-    throw new Error('[ethjs-util] while getting binary size, method getBinarySize requires input \'str\' to be type String, got \'' + typeof str + '\'.');
-  }
-
-  return Buffer.byteLength(str, 'utf8');
-}
-
-/**
- * Returns TRUE if the first specified array contains all elements
- * from the second one. FALSE otherwise.
+ * Constructs the EthRPC instance
  *
- * @param {array} superset
- * @param {array} subset
- *
- * @returns {boolean}
+ * @method EthRPC
+ * @param {Object} cprovider the eth rpc provider web3 standard..
+ * @param {Object} options the options, if any
+ * @returns {Object} ethrpc instance
  */
-function arrayContainsArray(superset, subset, some) {
-  if (Array.isArray(superset) !== true) {
-    throw new Error('[ethjs-util] method arrayContainsArray requires input \'superset\' to be an array got type \'' + typeof superset + '\'');
-  }
-  if (Array.isArray(subset) !== true) {
-    throw new Error('[ethjs-util] method arrayContainsArray requires input \'subset\' to be an array got type \'' + typeof subset + '\'');
+function EthRPC(cprovider, options) {
+  var self = this;
+  var optionsObject = options || {};
+
+  if (!(this instanceof EthRPC)) {
+    throw new Error('[ethjs-rpc] the EthRPC object requires the "new" flag in order to function normally (i.e. `const eth = new EthRPC(provider);`).');
   }
 
-  return subset[Boolean(some) && 'some' || 'every'](function (value) {
-    return superset.indexOf(value) >= 0;
+  self.options = Object.assign({
+    jsonSpace: optionsObject.jsonSpace || 0,
+    max: optionsObject.max || 9999999999999
   });
-}
-
-/**
- * Should be called to get utf8 from it's hex representation
- *
- * @method toUtf8
- * @param {String} string in hex
- * @returns {String} ascii string representation of hex value
- */
-function toUtf8(hex) {
-  var bufferValue = new Buffer(padToEven(stripHexPrefix(hex).replace(/^0+|0+$/g, '')), 'hex');
-
-  return bufferValue.toString('utf8');
-}
-
-/**
- * Should be called to get ascii from it's hex representation
- *
- * @method toAscii
- * @param {String} string in hex
- * @returns {String} ascii string representation of hex value
- */
-function toAscii(hex) {
-  var str = ''; // eslint-disable-line
-  var i = 0,
-      l = hex.length; // eslint-disable-line
-
-  if (hex.substring(0, 2) === '0x') {
-    i = 2;
-  }
-
-  for (; i < l; i += 2) {
-    var code = parseInt(hex.substr(i, 2), 16);
-    str += String.fromCharCode(code);
-  }
-
-  return str;
-}
-
-/**
- * Should be called to get hex representation (prefixed by 0x) of utf8 string
- *
- * @method fromUtf8
- * @param {String} string
- * @param {Number} optional padding
- * @returns {String} hex representation of input string
- */
-function fromUtf8(stringValue) {
-  var str = new Buffer(stringValue, 'utf8');
-
-  return '0x' + padToEven(str.toString('hex')).replace(/^0+|0+$/g, '');
-}
-
-/**
- * Should be called to get hex representation (prefixed by 0x) of ascii string
- *
- * @method fromAscii
- * @param {String} string
- * @param {Number} optional padding
- * @returns {String} hex representation of input string
- */
-function fromAscii(stringValue) {
-  var hex = ''; // eslint-disable-line
-  for (var i = 0; i < stringValue.length; i++) {
-    // eslint-disable-line
-    var code = stringValue.charCodeAt(i);
-    var n = code.toString(16);
-    hex += n.length < 2 ? '0' + n : n;
-  }
-
-  return '0x' + hex;
-}
-
-/**
- * getKeys([{a: 1, b: 2}, {a: 3, b: 4}], 'a') => [1, 3]
- *
- * @method getKeys get specific key from inner object array of objects
- * @param {String} params
- * @param {String} key
- * @param {Boolean} allowEmpty
- * @returns {Array} output just a simple array of output keys
- */
-function getKeys(params, key, allowEmpty) {
-  if (!Array.isArray(params)) {
-    throw new Error('[ethjs-util] method getKeys expecting type Array as \'params\' input, got \'' + typeof params + '\'');
-  }
-  if (typeof key !== 'string') {
-    throw new Error('[ethjs-util] method getKeys expecting type String for input \'key\' got \'' + typeof key + '\'.');
-  }
-
-  var result = []; // eslint-disable-line
-
-  for (var i = 0; i < params.length; i++) {
-    // eslint-disable-line
-    var value = params[i][key]; // eslint-disable-line
-    if (allowEmpty && !value) {
-      value = '';
-    } else if (typeof value !== 'string') {
-      throw new Error('invalid abi');
+  self.idCounter = Math.floor(Math.random() * self.options.max);
+  self.setProvider = function (provider) {
+    if (typeof provider !== 'object') {
+      throw new Error('[ethjs-rpc] the EthRPC object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new EthRPC(provider);\')');
     }
-    result.push(value);
-  }
 
-  return result;
+    self.currentProvider = provider;
+  };
+  self.setProvider(cprovider);
 }
 
 /**
- * Is the string a hex string.
+ * The main send async method
  *
- * @method check if string is hex string of specific length
- * @param {String} value
- * @param {Number} length
- * @returns {Boolean} output the string is a hex string
+ * @method sendAsync
+ * @param {Object} payload the rpc payload object
+ * @param {Function} cb the async standard callback
+ * @callback {Object|Array|Boolean|String} vary result instance output
  */
-function isHexString(value, length) {
-  if (typeof value !== 'string' || !value.match(/^0x[0-9A-Fa-f]*$/)) {
-    return false;
+EthRPC.prototype.sendAsync = function sendAsync(payload, callback) {
+  var self = this;
+  self.idCounter = self.idCounter % self.options.max;
+  var parsedPayload = createPayload(payload, self.idCounter++);
+
+  var promise = new Promise(function (resolve, reject) {
+    self.currentProvider.sendAsync(parsedPayload, function (err, response) {
+      var responseObject = response || {};
+
+      if (err || responseObject.error) {
+        var payloadErrorMessage = '[ethjs-rpc] ' + (responseObject.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(parsedPayload, null, self.options.jsonSpace) + ' ' + (err ? String(err) : JSON.stringify(responseObject.error, null, self.options.jsonSpace));
+        var payloadError = new Error(payloadErrorMessage);
+        payloadError.value = err || responseObject.error;
+        reject(payloadError);
+        return;
+      }
+
+      resolve(responseObject.result);
+      return;
+    });
+  });
+
+  if (callback) {
+    // connect promise resolve handlers to callback
+    return promiseToCallback(promise)(callback);
   }
 
-  if (length && value.length !== 2 + 2 * length) {
-    return false;
-  }
-
-  return true;
-}
-
-module.exports = {
-  arrayContainsArray: arrayContainsArray,
-  intToBuffer: intToBuffer,
-  getBinarySize: getBinarySize,
-  isHexPrefixed: isHexPrefixed,
-  stripHexPrefix: stripHexPrefix,
-  padToEven: padToEven,
-  intToHex: intToHex,
-  fromAscii: fromAscii,
-  fromUtf8: fromUtf8,
-  toAscii: toAscii,
-  toUtf8: toUtf8,
-  getKeys: getKeys,
-  isHexString: isHexString
+  // only return promise if no callback specified
+  return promise;
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).Buffer))
 
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+/**
+ * A simple create payload method
+ *
+ * @method createPayload
+ * @param {Object} data the rpc payload data
+ * @param {String} id the rpc data payload ID
+ * @returns {Object} payload the completed payload object
+ */
+function createPayload(data, id) {
+  return Object.assign({}, {
+    id: id,
+    jsonrpc: '2.0',
+    params: []
+  }, data);
 }
 
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = (nBytes * 8) - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = ((value * c) - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6410,838 +7077,6 @@ var toString = Object.prototype.toString;
 module.exports = function (x) {
 	return toString.call(x) === '[object Function]';
 };
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = Array.isArray || function (arr) {
-  return toString.call(arr) == '[object Array]';
-};
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = {
-	"methods": {
-		"web3_clientVersion": [
-			[],
-			"S"
-		],
-		"web3_sha3": [
-			[
-				"S"
-			],
-			"D",
-			1
-		],
-		"net_version": [
-			[],
-			"S"
-		],
-		"net_peerCount": [
-			[],
-			"Q"
-		],
-		"net_listening": [
-			[],
-			"B"
-		],
-		"personal_sign": [
-			[
-				"D",
-				"D20",
-				"S"
-			],
-			"D",
-			2
-		],
-		"personal_ecRecover": [
-			[
-				"D",
-				"D"
-			],
-			"D20",
-			2
-		],
-		"eth_protocolVersion": [
-			[],
-			"S"
-		],
-		"eth_syncing": [
-			[],
-			"B|EthSyncing"
-		],
-		"eth_coinbase": [
-			[],
-			"D20"
-		],
-		"eth_mining": [
-			[],
-			"B"
-		],
-		"eth_hashrate": [
-			[],
-			"Q"
-		],
-		"eth_gasPrice": [
-			[],
-			"Q"
-		],
-		"eth_accounts": [
-			[],
-			[
-				"D20"
-			]
-		],
-		"eth_blockNumber": [
-			[],
-			"Q"
-		],
-		"eth_getBalance": [
-			[
-				"D20",
-				"Q|T"
-			],
-			"Q",
-			1,
-			2
-		],
-		"eth_getStorageAt": [
-			[
-				"D20",
-				"Q",
-				"Q|T"
-			],
-			"D",
-			2,
-			2
-		],
-		"eth_getTransactionCount": [
-			[
-				"D20",
-				"Q|T"
-			],
-			"Q",
-			1,
-			2
-		],
-		"eth_getBlockTransactionCountByHash": [
-			[
-				"D32"
-			],
-			"Q",
-			1
-		],
-		"eth_getBlockTransactionCountByNumber": [
-			[
-				"Q|T"
-			],
-			"Q",
-			1
-		],
-		"eth_getUncleCountByBlockHash": [
-			[
-				"D32"
-			],
-			"Q",
-			1
-		],
-		"eth_getUncleCountByBlockNumber": [
-			[
-				"Q"
-			],
-			"Q",
-			1
-		],
-		"eth_getCode": [
-			[
-				"D20",
-				"Q|T"
-			],
-			"D",
-			1,
-			2
-		],
-		"eth_sign": [
-			[
-				"D20",
-				"D"
-			],
-			"D",
-			2
-		],
-		"eth_signTypedData": [
-			[
-				"Array|DATA",
-				"D20"
-			],
-			"D",
-			1
-		],
-		"eth_sendTransaction": [
-			[
-				"SendTransaction"
-			],
-			"D",
-			1
-		],
-		"eth_sendRawTransaction": [
-			[
-				"D"
-			],
-			"D32",
-			1
-		],
-		"eth_call": [
-			[
-				"CallTransaction",
-				"Q|T"
-			],
-			"D",
-			1,
-			2
-		],
-		"eth_estimateGas": [
-			[
-				"EstimateTransaction",
-				"Q|T"
-			],
-			"Q",
-			1
-		],
-		"eth_getBlockByHash": [
-			[
-				"D32",
-				"B"
-			],
-			"Block",
-			2
-		],
-		"eth_getBlockByNumber": [
-			[
-				"Q|T",
-				"B"
-			],
-			"Block",
-			2
-		],
-		"eth_getTransactionByHash": [
-			[
-				"D32"
-			],
-			"Transaction",
-			1
-		],
-		"eth_getTransactionByBlockHashAndIndex": [
-			[
-				"D32",
-				"Q"
-			],
-			"Transaction",
-			2
-		],
-		"eth_getTransactionByBlockNumberAndIndex": [
-			[
-				"Q|T",
-				"Q"
-			],
-			"Transaction",
-			2
-		],
-		"eth_getTransactionReceipt": [
-			[
-				"D32"
-			],
-			"Receipt",
-			1
-		],
-		"eth_getUncleByBlockHashAndIndex": [
-			[
-				"D32",
-				"Q"
-			],
-			"Block",
-			1
-		],
-		"eth_getUncleByBlockNumberAndIndex": [
-			[
-				"Q|T",
-				"Q"
-			],
-			"Block",
-			2
-		],
-		"eth_getCompilers": [
-			[],
-			[
-				"S"
-			]
-		],
-		"eth_compileLLL": [
-			[
-				"S"
-			],
-			"D",
-			1
-		],
-		"eth_compileSolidity": [
-			[
-				"S"
-			],
-			"D",
-			1
-		],
-		"eth_compileSerpent": [
-			[
-				"S"
-			],
-			"D",
-			1
-		],
-		"eth_newFilter": [
-			[
-				"Filter"
-			],
-			"Q",
-			1
-		],
-		"eth_newBlockFilter": [
-			[],
-			"Q"
-		],
-		"eth_newPendingTransactionFilter": [
-			[],
-			"Q"
-		],
-		"eth_uninstallFilter": [
-			[
-				"QP"
-			],
-			"B",
-			1
-		],
-		"eth_getFilterChanges": [
-			[
-				"QP"
-			],
-			[
-				"FilterChange"
-			],
-			1
-		],
-		"eth_getFilterLogs": [
-			[
-				"QP"
-			],
-			[
-				"FilterChange"
-			],
-			1
-		],
-		"eth_getLogs": [
-			[
-				"Filter"
-			],
-			[
-				"FilterChange"
-			],
-			1
-		],
-		"eth_getWork": [
-			[],
-			[
-				"D"
-			]
-		],
-		"eth_submitWork": [
-			[
-				"D",
-				"D32",
-				"D32"
-			],
-			"B",
-			3
-		],
-		"eth_submitHashrate": [
-			[
-				"D",
-				"D"
-			],
-			"B",
-			2
-		],
-		"db_putString": [
-			[
-				"S",
-				"S",
-				"S"
-			],
-			"B",
-			2
-		],
-		"db_getString": [
-			[
-				"S",
-				"S"
-			],
-			"S",
-			2
-		],
-		"db_putHex": [
-			[
-				"S",
-				"S",
-				"D"
-			],
-			"B",
-			2
-		],
-		"db_getHex": [
-			[
-				"S",
-				"S"
-			],
-			"D",
-			2
-		],
-		"shh_post": [
-			[
-				"SHHPost"
-			],
-			"B",
-			1
-		],
-		"shh_version": [
-			[],
-			"S"
-		],
-		"shh_newIdentity": [
-			[],
-			"D"
-		],
-		"shh_hasIdentity": [
-			[
-				"D"
-			],
-			"B"
-		],
-		"shh_newGroup": [
-			[],
-			"D"
-		],
-		"shh_addToGroup": [
-			[
-				"D"
-			],
-			"B",
-			1
-		],
-		"shh_newFilter": [
-			[
-				"SHHFilter"
-			],
-			"Q",
-			1
-		],
-		"shh_uninstallFilter": [
-			[
-				"Q"
-			],
-			"B",
-			1
-		],
-		"shh_getFilterChanges": [
-			[
-				"Q"
-			],
-			[
-				"SHHFilterChange"
-			],
-			1
-		],
-		"shh_getMessages": [
-			[
-				"Q"
-			],
-			[
-				"SHHFilterChange"
-			],
-			1
-		]
-	},
-	"tags": [
-		"latest",
-		"earliest",
-		"pending"
-	],
-	"objects": {
-		"EthSyncing": {
-			"__required": [],
-			"startingBlock": "Q",
-			"currentBlock": "Q",
-			"highestBlock": "Q"
-		},
-		"SendTransaction": {
-			"__required": [
-				"from",
-				"data"
-			],
-			"from": "D20",
-			"to": "D20",
-			"gas": "Q",
-			"gasPrice": "Q",
-			"value": "Q",
-			"data": "D",
-			"nonce": "Q"
-		},
-		"EstimateTransaction": {
-			"__required": [],
-			"from": "D20",
-			"to": "D20",
-			"gas": "Q",
-			"gasPrice": "Q",
-			"value": "Q",
-			"data": "D",
-			"nonce": "Q"
-		},
-		"CallTransaction": {
-			"__required": [
-				"to"
-			],
-			"from": "D20",
-			"to": "D20",
-			"gas": "Q",
-			"gasPrice": "Q",
-			"value": "Q",
-			"data": "D",
-			"nonce": "Q"
-		},
-		"Block": {
-			"__required": [],
-			"number": "Q",
-			"hash": "D32",
-			"parentHash": "D32",
-			"nonce": "D",
-			"sha3Uncles": "D",
-			"logsBloom": "D",
-			"transactionsRoot": "D",
-			"stateRoot": "D",
-			"receiptsRoot": "D",
-			"miner": "D",
-			"difficulty": "Q",
-			"totalDifficulty": "Q",
-			"extraData": "D",
-			"size": "Q",
-			"gasLimit": "Q",
-			"gasUsed": "Q",
-			"timestamp": "Q",
-			"transactions": [
-				"DATA|Transaction"
-			],
-			"uncles": [
-				"D"
-			]
-		},
-		"Transaction": {
-			"__required": [],
-			"hash": "D32",
-			"nonce": "Q",
-			"blockHash": "D32",
-			"blockNumber": "Q",
-			"transactionIndex": "Q",
-			"from": "D20",
-			"to": "D20",
-			"value": "Q",
-			"gasPrice": "Q",
-			"gas": "Q",
-			"input": "D"
-		},
-		"Receipt": {
-			"__required": [],
-			"transactionHash": "D32",
-			"transactionIndex": "Q",
-			"blockHash": "D32",
-			"blockNumber": "Q",
-			"cumulativeGasUsed": "Q",
-			"gasUsed": "Q",
-			"contractAddress": "D20",
-			"logs": [
-				"FilterChange"
-			]
-		},
-		"Filter": {
-			"__required": [],
-			"fromBlock": "Q|T",
-			"toBlock": "Q|T",
-			"address": "D20",
-			"topics": [
-				"D"
-			]
-		},
-		"FilterChange": {
-			"__required": [],
-			"removed": "B",
-			"logIndex": "Q",
-			"transactionIndex": "Q",
-			"transactionHash": "D32",
-			"blockHash": "D32",
-			"blockNumber": "Q",
-			"address": "D20",
-			"data": "Array|DATA",
-			"topics": [
-				"D"
-			]
-		},
-		"SHHPost": {
-			"__required": [
-				"topics",
-				"payload",
-				"priority",
-				"ttl"
-			],
-			"from": "D",
-			"to": "D",
-			"topics": [
-				"D"
-			],
-			"payload": "D",
-			"priority": "Q",
-			"ttl": "Q"
-		},
-		"SHHFilter": {
-			"__required": [
-				"topics"
-			],
-			"to": "D",
-			"topics": [
-				"D"
-			]
-		},
-		"SHHFilterChange": {
-			"__required": [],
-			"hash": "D",
-			"from": "D",
-			"to": "D",
-			"expiry": "Q",
-			"ttl": "Q",
-			"sent": "Q",
-			"topics": [
-				"D"
-			],
-			"payload": "D",
-			"workProved": "Q"
-		},
-		"SHHMessage": {
-			"__required": [],
-			"hash": "D",
-			"from": "D",
-			"to": "D",
-			"expiry": "Q",
-			"ttl": "Q",
-			"sent": "Q",
-			"topics": [
-				"D"
-			],
-			"payload": "D",
-			"workProved": "Q"
-		}
-	}
-};
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
 
 
 /***/ }),
@@ -7257,10 +7092,80 @@ module.exports = typeof setImmediate === 'function' ? setImmediate :
 		setTimeout.apply(null, args);
 	};
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18).setImmediate))
 
 /***/ }),
 /* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(19);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -7450,104 +7355,196 @@ module.exports = typeof setImmediate === 'function' ? setImmediate :
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(16)))
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(18);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(20)))
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
 };
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
 
 /***/ })
