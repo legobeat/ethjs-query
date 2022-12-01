@@ -105,9 +105,6 @@ module.exports = g;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var isHexPrefixed = __webpack_require__(3);
 
 /**
@@ -119,7 +116,6 @@ module.exports = function stripHexPrefix(str) {
   if (typeof str !== 'string') {
     return str;
   }
-
   return isHexPrefixed(str) ? str.slice(2) : str;
 };
 
@@ -1922,10 +1918,7 @@ function isnan (val) {
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/***/ (function(module, exports) {
 
 /**
  * Returns a `Boolean` on whether or not the a `String` starts with '0x'
@@ -1937,7 +1930,6 @@ module.exports = function isHexPrefixed(str) {
   if (typeof str !== 'string') {
     throw new Error("[is-hex-prefixed] value must be type 'string', is currently type " + typeof str + ", while checking isHexPrefixed.");
   }
-
   return str.slice(0, 2) === '0x';
 };
 
@@ -1975,20 +1967,16 @@ module.exports = function (promise) {
 var format = __webpack_require__(6);
 var EthRPC = __webpack_require__(15);
 var promiseToCallback = __webpack_require__(4);
-
 module.exports = Eth;
-
 function Eth(provider, options) {
   var self = this;
   var optionsObject = options || {};
-
   if (!(this instanceof Eth)) {
     throw new Error('[ethjs-query] the Eth object requires the "new" flag in order to function normally (i.e. `const eth = new Eth(provider);`).');
   }
   if (typeof provider !== 'object') {
-    throw new Error('[ethjs-query] the Eth object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new Eth(provider);\')');
+    throw new Error("[ethjs-query] the Eth object requires that the first input 'provider' must be an object, got '" + typeof provider + "' (i.e. 'const eth = new Eth(provider);')");
   }
-
   self.options = Object.assign({
     debug: optionsObject.debug || false,
     logger: optionsObject.logger || console,
@@ -1997,19 +1985,16 @@ function Eth(provider, options) {
   self.rpc = new EthRPC(provider);
   self.setProvider = self.rpc.setProvider;
 }
-
 Eth.prototype.log = function log(message) {
   var self = this;
-  if (self.options.debug) self.options.logger.log('[ethjs-query log] ' + message);
+  if (self.options.debug) self.options.logger.log("[ethjs-query log] " + message);
 };
-
 Object.keys(format.schema.methods).forEach(function (rpcMethodName) {
   Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
     enumerable: true,
     value: generateFnFor(rpcMethodName, format.schema.methods[rpcMethodName])
   });
 });
-
 function generateFnFor(rpcMethodName, methodObject) {
   return function outputMethod() {
     var callback = null; // eslint-disable-line
@@ -2022,7 +2007,6 @@ function generateFnFor(rpcMethodName, methodObject) {
     if (args.length > 0 && typeof args[args.length - 1] === 'function') {
       callback = args.pop();
     }
-
     var promise = performCall.call(this);
 
     // if callback provided, convert promise to callback
@@ -2032,18 +2016,16 @@ function generateFnFor(rpcMethodName, methodObject) {
 
     // only return promise if no callback provided
     return promise;
-
     function performCall() {
       var _this = this;
-
       return new Promise(function (resolve, reject) {
         // validate arg length
         if (args.length < methodObject[2]) {
-          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at least ' + methodObject[2] + ' input (format type ' + methodObject[0][0] + '), ' + args.length + ' provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
+          reject(new Error("[ethjs-query] method '" + protoMethodName + "' requires at least " + methodObject[2] + " input (format type " + methodObject[0][0] + "), " + args.length + " provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#" + rpcMethodName.toLowerCase()));
           return;
         }
         if (args.length > methodObject[0].length) {
-          reject(new Error('[ethjs-query] method \'' + protoMethodName + '\' requires at most ' + methodObject[0].length + ' params, ' + args.length + ' provided \'' + JSON.stringify(args, null, self.options.jsonSpace) + '\'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#' + rpcMethodName.toLowerCase()));
+          reject(new Error("[ethjs-query] method '" + protoMethodName + "' requires at most " + methodObject[0].length + " params, " + args.length + " provided '" + JSON.stringify(args, null, self.options.jsonSpace) + "'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#" + rpcMethodName.toLowerCase()));
           return;
         }
 
@@ -2053,31 +2035,34 @@ function generateFnFor(rpcMethodName, methodObject) {
         }
 
         // format inputs
-        _this.log('attempting method formatting for \'' + protoMethodName + '\' with inputs ' + JSON.stringify(args, null, _this.options.jsonSpace));
+        _this.log("attempting method formatting for '" + protoMethodName + "' with inputs " + JSON.stringify(args, null, _this.options.jsonSpace));
         try {
           inputs = format.formatInputs(rpcMethodName, args);
-          _this.log('method formatting success for \'' + protoMethodName + '\' with formatted result: ' + JSON.stringify(inputs, null, _this.options.jsonSpace));
+          _this.log("method formatting success for '" + protoMethodName + "' with formatted result: " + JSON.stringify(inputs, null, _this.options.jsonSpace));
         } catch (formattingError) {
-          reject(new Error('[ethjs-query] while formatting inputs \'' + JSON.stringify(args, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' error: ' + formattingError));
+          reject(new Error("[ethjs-query] while formatting inputs '" + JSON.stringify(args, null, _this.options.jsonSpace) + "' for method '" + protoMethodName + "' error: " + formattingError));
           return;
         }
 
         // perform rpc call
-        _this.rpc.sendAsync({ method: rpcMethodName, params: inputs }).then(function (result) {
+        _this.rpc.sendAsync({
+          method: rpcMethodName,
+          params: inputs
+        }).then(function (result) {
           // format result
           try {
-            _this.log('attempting method formatting for \'' + protoMethodName + '\' with raw outputs: ' + JSON.stringify(result, null, _this.options.jsonSpace));
+            _this.log("attempting method formatting for '" + protoMethodName + "' with raw outputs: " + JSON.stringify(result, null, _this.options.jsonSpace));
             var methodOutputs = format.formatOutputs(rpcMethodName, result);
-            _this.log('method formatting success for \'' + protoMethodName + '\' formatted result: ' + JSON.stringify(methodOutputs, null, _this.options.jsonSpace));
+            _this.log("method formatting success for '" + protoMethodName + "' formatted result: " + JSON.stringify(methodOutputs, null, _this.options.jsonSpace));
             resolve(methodOutputs);
             return;
           } catch (outputFormattingError) {
-            var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(result, null, _this.options.jsonSpace) + '\' for method \'' + protoMethodName + '\' ' + outputFormattingError);
+            var outputError = new Error("[ethjs-query] while formatting outputs from RPC '" + JSON.stringify(result, null, _this.options.jsonSpace) + "' for method '" + protoMethodName + "' " + outputFormattingError);
             reject(outputError);
             return;
           }
-        })['catch'](function (error) {
-          var outputError = new Error('[ethjs-query] while formatting outputs from RPC \'' + JSON.stringify(error, null, _this.options.jsonSpace) + '\'');
+        })["catch"](function (error) {
+          var outputError = new Error("[ethjs-query] while formatting outputs from RPC '" + JSON.stringify(error, null, _this.options.jsonSpace) + "'");
           reject(outputError);
           return;
         });
@@ -3467,9 +3452,6 @@ module.exports = Array.isArray || function (arr) {
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 var BN = __webpack_require__(13);
 var stripHexPrefix = __webpack_require__(1);
 
@@ -3490,11 +3472,9 @@ module.exports = function numberToBN(arg) {
       multiplier = new BN(-1, 10);
     }
     stringArg = stringArg === '' ? '0' : stringArg;
-
     if (!stringArg.match(/^-?[0-9]+$/) && stringArg.match(/^[0-9A-Fa-f]+$/) || stringArg.match(/^[a-fA-F]+$/) || isHexPrefixed === true && stringArg.match(/^[0-9A-Fa-f]+$/)) {
       return new BN(stringArg, 16).mul(multiplier);
     }
-
     if ((stringArg.match(/^-?[0-9]+$/) || stringArg === '') && isHexPrefixed === false) {
       return new BN(stringArg, 10).mul(multiplier);
     }
@@ -3503,7 +3483,6 @@ module.exports = function numberToBN(arg) {
       return new BN(arg.toString(10), 10);
     }
   }
-
   throw new Error('[number-to-bn] while converting number ' + JSON.stringify(arg) + ' to BN.js instance, error: invalid number value. Value must be an integer, hex string, BN or BigNumber instance. Note, decimals are not supported.');
 };
 
