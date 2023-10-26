@@ -1,5 +1,5 @@
 const format = require('ethjs-format');
-const EthRPC = require('ethjs-rpc');
+const EthRPC = require('@metamask/ethjs-rpc');
 const promiseToCallback = require('promise-to-callback');
 
 module.exports = Eth;
