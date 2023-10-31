@@ -120,9 +120,9 @@
     }
   },
   "dependencies": {
+    "@metamask/ethjs-rpc": "^0.3.0",
     "babel-runtime": "^6.26.0",
     "ethjs-format": "0.2.7",
-    "ethjs-rpc": "0.2.0",
     "promise-to-callback": "^1.0.0"
   },
   "devDependencies": {
