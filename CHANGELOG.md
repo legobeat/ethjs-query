@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0]
+### Changed
+- **BREAKING**: `@babel/runtime@^7.0.0` is now a peerDependency ([#10](https://github.com/MetaMask/ethjs-query/pull/10))
+- Update from `ethjs-rpc@0.2.0` to `@metamask/ethjs-rpc@^0.3.0` ([#22](https://github.com/MetaMask/ethjs-query/pull/22))
+
+### Removed
+- Remove implicit peerDependency `babel-runtime` ([#10](https://github.com/MetaMask/ethjs-query/pull/10))
+
 ## [0.5.0]
 ### Changed
 - change to error reporting
@@ -153,7 +161,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - linting
   - basic exports
 
-[Unreleased]: https://github.com/MetaMask/ethjs-query/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/MetaMask/ethjs-query/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/MetaMask/ethjs-query/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/MetaMask/ethjs-query/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/MetaMask/ethjs-query/compare/v0.3.8...v0.4.0
 [0.3.8]: https://github.com/MetaMask/ethjs-query/compare/v0.3.7...v0.3.8
