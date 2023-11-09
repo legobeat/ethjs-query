@@ -1,4 +1,4 @@
-const format = require('ethjs-format');
+const format = require('@metamask/ethjs-format');
 const EthRPC = require('@metamask/ethjs-rpc');
 const promiseToCallback = require('promise-to-callback');
 

@@ -120,12 +120,13 @@
     }
   },
   "dependencies": {
+    "@metamask/ethjs-format": "^0.2.8",
     "@metamask/ethjs-rpc": "^0.3.0",
     "babel-runtime": "^6.26.0",
-    "ethjs-format": "0.2.7",
     "promise-to-callback": "^1.0.0"
   },
   "devDependencies": {
+    "@metamask/ethjs-util": "^0.2.0",
     "babel-cli": "6.18.0",
     "babel-core": "6.18.2",
     "babel-eslint": "7.2.2",
@@ -161,7 +162,7 @@
     "eslint-plugin-import": "1.8.0",
     "eslint-plugin-jsx-a11y": "1.2.0",
     "eslint-plugin-react": "5.1.1",
-    "ethjs-abi": "0.0.1",
+    "ethjs-abi": "0.2.1",
     "ganache-cli": "6.12.2",
     "hard-rejection": "^1.0.0",
     "istanbul": "0.4.5",
