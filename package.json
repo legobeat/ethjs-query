@@ -161,7 +161,7 @@
     "eslint-plugin-react": "5.1.1",
     "ethjs-abi": "0.2.1",
     "ganache-cli": "6.12.2",
-    "hard-rejection": "^1.0.0",
+    "hard-rejection": "^2.1.0",
     "istanbul": "0.4.5",
     "json-loader": "0.5.4",
     "lint-staged": "1.0.1",
