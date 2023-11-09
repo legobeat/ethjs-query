@@ -119,8 +119,8 @@
     }
   },
   "dependencies": {
+    "@metamask/ethjs-format": "^0.3.0",
     "@metamask/ethjs-rpc": "^0.3.0",
-    "ethjs-format": "0.2.7",
     "promise-to-callback": "^1.0.0"
   },
   "devDependencies": {
@@ -148,6 +148,7 @@
     "@babel/plugin-transform-template-literals": "^7.0.0",
     "@babel/plugin-transform-unicode-regex": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "@metamask/ethjs-util": "^0.3.0",
     "babel-loader": "^8.0.0",
     "bignumber.js": "3.0.1",
     "chai": "3.5.0",
