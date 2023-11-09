@@ -2,7 +2,7 @@ require('hard-rejection')();
 const Eth = require('../index.js');
 const Eth2 = require('../index.js');
 const assert = require('chai').assert;
-const util = require('ethjs-util');
+const { getBinarySize } = require('@metamask/ethjs-util');
 const Ganache = require('ganache-cli');
 const BigNumber = require('bn.js');
 const abi = require('ethjs-abi');
@@ -163,7 +163,7 @@ describe('ethjs-query', () => {
       eth.coinbase((err, result) => {
         assert.equal(err, null);
         assert.equal(typeof result, 'string');
-        assert.equal(util.getBinarySize(result), 42);
+        assert.equal(getBinarySize(result), 42);
 
         done();
       });
@@ -175,7 +175,7 @@ describe('ethjs-query', () => {
       eth.coinbase()
       .then((result) => {
         assert.equal(typeof result, 'string');
-        assert.equal(util.getBinarySize(result), 42);
+        assert.equal(getBinarySize(result), 42);
 
         done();
       })
@@ -222,7 +222,7 @@ describe('ethjs-query', () => {
       eth.coinbase()
       .then((result) => {
         assert.equal(typeof result, 'string');
-        assert.equal(util.getBinarySize(result), 42);
+        assert.equal(getBinarySize(result), 42);
 
         eth.getBalance(result)
         .then((balance) => {
@@ -245,7 +245,7 @@ describe('ethjs-query', () => {
       eth.coinbase((err, coinbase) => {
         assert.equal(err, null);
         assert.equal(typeof coinbase, 'string');
-        assert.equal(util.getBinarySize(coinbase), 42);
+        assert.equal(getBinarySize(coinbase), 42);
 
         eth.getBalance(coinbase, (balanceError, balance) => {
           assert.equal(balanceError, null);
@@ -271,7 +271,7 @@ describe('ethjs-query', () => {
         assert.equal(Array.isArray(result), true);
         assert.equal(result.length > 0, true);
         assert.equal(typeof result[0], 'string');
-        assert.equal(util.getBinarySize(result[0]), 42);
+        assert.equal(getBinarySize(result[0]), 42);
 
         done();
       });
@@ -351,9 +351,9 @@ describe('ethjs-query', () => {
       eth.getBlockByNumber(0, true, (blockError, result) => {
         assert.equal(blockError, null);
         assert.equal(typeof result, 'object');
-        assert.equal(util.getBinarySize(result.hash), 66);
-        assert.equal(util.getBinarySize(result.sha3Uncles), 66);
-        assert.equal(util.getBinarySize(result.parentHash), 66);
+        assert.equal(getBinarySize(result.hash), 66);
+        assert.equal(getBinarySize(result.sha3Uncles), 66);
+        assert.equal(getBinarySize(result.parentHash), 66);
         assert.equal(result.size.toNumber(10) > 0, true);
         assert.equal(result.gasLimit.toNumber(10) > 0, true);
         assert.equal(result.timestamp.toNumber(10) > 0, true);
@@ -371,9 +371,9 @@ describe('ethjs-query', () => {
         eth.getBlockByHash(block.hash, true, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'object');
-          assert.equal(util.getBinarySize(result.hash), 66);
-          assert.equal(util.getBinarySize(result.sha3Uncles), 66);
-          assert.equal(util.getBinarySize(result.parentHash), 66);
+          assert.equal(getBinarySize(result.hash), 66);
+          assert.equal(getBinarySize(result.sha3Uncles), 66);
+          assert.equal(getBinarySize(result.parentHash), 66);
           assert.equal(result.size.toNumber(10) > 0, true);
           assert.equal(result.gasLimit.toNumber(10) > 0, true);
           assert.equal(result.timestamp.toNumber(10) > 0, true);
@@ -444,7 +444,7 @@ describe('ethjs-query', () => {
         eth.sendTransaction(testTransaction, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result), 66);
+          assert.equal(getBinarySize(result), 66);
 
           eth.getTransactionReceipt(result, (receiptError, receipt) => {
             assert.equal(receiptError, null);
@@ -453,7 +453,7 @@ describe('ethjs-query', () => {
             eth.getTransactionByBlockHashAndIndex(receipt.blockHash, 0, (blockError, block) => {
               assert.equal(blockError, null);
               assert.equal(typeof block, 'object');
-              assert.equal(util.getBinarySize(block.blockHash), 66);
+              assert.equal(getBinarySize(block.blockHash), 66);
               assert.equal(block.gas.toNumber(10) >= 0, true);
               assert.equal(block.gasPrice.toNumber(10) >= 0, true);
               assert.equal(block.transactionIndex.toNumber(10) >= 0, true);
@@ -483,7 +483,7 @@ describe('ethjs-query', () => {
         eth.sendTransaction(testTransaction, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result), 66);
+          assert.equal(getBinarySize(result), 66);
 
           eth.getTransactionReceipt(result, (receiptError, receipt) => {
             assert.equal(receiptError, null);
@@ -492,7 +492,7 @@ describe('ethjs-query', () => {
             eth.getTransactionByBlockNumberAndIndex(1, 0, (blockError, block) => {
               assert.equal(blockError, null);
               assert.equal(typeof block, 'object');
-              assert.equal(util.getBinarySize(block.blockHash), 66);
+              assert.equal(getBinarySize(block.blockHash), 66);
               assert.equal(block.gas.toNumber(10) >= 0, true);
               assert.equal(block.gasPrice.toNumber(10) >= 0, true);
               assert.equal(block.transactionIndex.toNumber(10) >= 0, true);
@@ -522,7 +522,7 @@ describe('ethjs-query', () => {
         eth.sendTransaction(testTransaction, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result), 66);
+          assert.equal(getBinarySize(result), 66);
 
           done();
         });
@@ -545,7 +545,7 @@ describe('ethjs-query', () => {
         eth.sendTransaction(testTransaction, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result), 66);
+          assert.equal(getBinarySize(result), 66);
 
           done();
         });
@@ -564,7 +564,7 @@ describe('ethjs-query', () => {
         eth.sign(accounts[0], testTxData, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result) > 0, true);
+          assert.equal(getBinarySize(result) > 0, true);
 
           done();
         });
@@ -588,14 +588,14 @@ describe('ethjs-query', () => {
         eth.sendTransaction(testTransaction, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result), 66);
+          assert.equal(getBinarySize(result), 66);
 
           setTimeout(() => {
             eth.getTransactionReceipt(result, (receiptError, receipt) => {
               assert.equal(receiptError, null);
               assert.equal(typeof receipt, 'object');
 
-              assert.equal(util.getBinarySize(receipt.transactionHash), 66);
+              assert.equal(getBinarySize(receipt.transactionHash), 66);
               assert.equal(receipt.transactionIndex.toNumber(10) >= 0, true);
               assert.equal(receipt.blockNumber.toNumber(10) >= 0, true);
               assert.equal(receipt.cumulativeGasUsed.toNumber(10) >= 0, true);
@@ -627,14 +627,14 @@ describe('ethjs-query', () => {
         eth.sendTransaction(testContractTransaction, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result), 66);
+          assert.equal(getBinarySize(result), 66);
 
           setTimeout(() => {
             eth.getTransactionReceipt(result, (receiptError, receipt) => {
               assert.equal(receiptError, null);
               assert.equal(typeof receipt, 'object');
 
-              assert.equal(util.getBinarySize(receipt.transactionHash), 66);
+              assert.equal(getBinarySize(receipt.transactionHash), 66);
               assert.equal(receipt.transactionIndex.toNumber(10) >= 0, true);
               assert.equal(receipt.blockNumber.toNumber(10) >= 0, true);
               assert.equal(receipt.cumulativeGasUsed.toNumber(10) >= 0, true);
@@ -653,7 +653,7 @@ describe('ethjs-query', () => {
               eth.sendTransaction(setMethodTransaction, (setMethodError, setMethodTx) => {
                 assert.equal(setMethodError, null);
                 assert.equal(typeof setMethodTx, 'string');
-                assert.equal(util.getBinarySize(setMethodTx), 66);
+                assert.equal(getBinarySize(setMethodTx), 66);
 
                 setTimeout(() => {
                   const callMethodTransaction = {
@@ -700,14 +700,14 @@ describe('ethjs-query', () => {
         eth.sendTransaction(testContractTransaction, (error, result) => {
           assert.equal(error, null);
           assert.equal(typeof result, 'string');
-          assert.equal(util.getBinarySize(result), 66);
+          assert.equal(getBinarySize(result), 66);
 
           setTimeout(() => {
             eth.getTransactionReceipt(result, (receiptError, receipt) => {
               assert.equal(receiptError, null);
               assert.equal(typeof receipt, 'object');
 
-              assert.equal(util.getBinarySize(receipt.transactionHash), 66);
+              assert.equal(getBinarySize(receipt.transactionHash), 66);
               assert.equal(receipt.transactionIndex.toNumber(10) >= 0, true);
               assert.equal(receipt.blockNumber.toNumber(10) >= 0, true);
               assert.equal(receipt.cumulativeGasUsed.toNumber(10) >= 0, true);
@@ -726,7 +726,7 @@ describe('ethjs-query', () => {
               eth.sendTransaction(setMethodTransaction, (setMethodError, setMethodTx) => {
                 assert.equal(setMethodError, null);
                 assert.equal(typeof setMethodTx, 'string');
-                assert.equal(util.getBinarySize(setMethodTx), 66);
+                assert.equal(getBinarySize(setMethodTx), 66);
 
                 setTimeout(() => {
                   const callMethodTransaction = {
