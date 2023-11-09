@@ -149,7 +149,7 @@
     "@babel/register": "^7.0.0",
     "@metamask/ethjs-util": "^0.3.0",
     "babel-loader": "^8.0.0",
-    "bignumber.js": "3.0.1",
+    "bignumber.js": "^9.1.2",
     "chai": "3.5.0",
     "cross-env": "1.0.7",
     "eslint": "^5.4.0",
