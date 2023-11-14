@@ -1,11 +1,12 @@
 require('hard-rejection')();
-const Eth = require('../index.js');
-const Eth2 = require('../index.js');
-const assert = require('chai').assert;
+const { assert } = require('chai');
 const { getBinarySize } = require('@metamask/ethjs-util');
 const Ganache = require('ganache-cli');
 const BigNumber = require('bn.js');
 const abi = require('ethjs-abi');
+
+const Eth = require('../index.js');
+const Eth2 = require('../index.js');
 
 describe('ethjs-query', () => {
   let provider;
@@ -56,8 +57,11 @@ describe('ethjs-query', () => {
     });
 
     it('debugger should function', (done) => {
-      const eth = new Eth(provider, { debug: true, logger: { log: (message) => {
-        assert.equal(typeof message, 'string');
+      const eth = new Eth(provider, {
+        debug: true,
+        logger: {
+          log: (message) => {
+            assert.equal(typeof message, 'string');
       }}}); // eslint-disable-line
 
       eth.accounts((err, result) => {

@@ -84,15 +84,14 @@ function generateFnFor(rpcMethodName, methodObject) {
 
         // perform rpc call
         this.rpc.sendAsync({ method: rpcMethodName, params: inputs })
-        .then(result => {
+        .then((result) => {
           // format result
           this.log(`attempting method formatting for '${protoMethodName}' with raw outputs: ${JSON.stringify(result, null, this.options.jsonSpace)}`);
           const methodOutputs = format.formatOutputs(rpcMethodName, result);
           this.log(`method formatting success for '${protoMethodName}' formatted result: ${JSON.stringify(methodOutputs, null, this.options.jsonSpace)}`);
           resolve(methodOutputs);
-          return;
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
         });
       });

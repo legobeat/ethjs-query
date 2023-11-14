@@ -14,7 +14,7 @@ var config = {                    // eslint-disable-line
       },
       {
         test: /\.json$/,
-        loader: 'json-loader',
+        loaders: ['json-loader'],
       },
     ],
   },
