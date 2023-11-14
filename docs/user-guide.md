@@ -5,14 +5,14 @@ All information for developers using `ethjs-query` should consult this document.
 ## Install
 
 ```
-npm install --save ethjs-query
+npm install --save @metamask/ethjs-query
 ```
 
 ## Usage
 
 ```js
-const HttpProvider = require('ethjs-provider-http');
-const Eth = require('ethjs-query');
+const HttpProvider = require('@metamask/ethjs-provider-http');
+const Eth = require('@metamask/ethjs-query');
 const eth = new Eth(new HttpProvider('http://localhost:8545'));
 
 eth.getBalance('0x407d73d8a49eeb85d32cf465507dd71d507100c1', cb);
@@ -32,11 +32,11 @@ eth.sendTransaction({
 
 ## Debugging Options
 
-`ethjs-query` comes equip with a full debug options for all data inputs and outputs.
+`ethjs-query` comes equipped with full debug options for all data inputs and outputs.
 
 ```js
-const HttpProvider = require('ethjs-provider-http');
-const Eth = require('ethjs-query');
+const HttpProvider = require('@metamask/ethjs-provider-http');
+const Eth = require('@metamask/ethjs-query');
 const eth = new Eth(new HttpProvider('http://localhost:8545'), { debug: true, logger: console, jsonSpace: 0 });
 
 eth.accounts(cb);
