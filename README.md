@@ -2,14 +2,9 @@
 
 <div>
   <!-- NPM Version -->
-  <a href="https://www.npmjs.org/package/ethjs-query">
-    <img src="http://img.shields.io/npm/v/ethjs-query.svg"
+  <a href="https://www.npmjs.org/package/@metamask/ethjs-query">
+    <img src="http://img.shields.io/npm/v/@metamask/ethjs-query.svg"
     alt="NPM version" />
-  </a>
-
-  <!-- Javascript Style -->
-  <a href="http://airbnb.io/javascript/">
-    <img src="https://img.shields.io/badge/code%20style-airbnb-brightgreen.svg" alt="js-airbnb-style" />
   </a>
 </div>
 
@@ -20,15 +15,15 @@ A simple module for querying the Ethereum RPC layer.
 ## Install
 
 ```
-npm install --save ethjs-query
+npm install --save @metamask/ethjs-query
 ```
 
 ## Usage
 
 ```js
 const BN = require('bn.js');
-const HttpProvider = require('ethjs-provider-http');
-const Eth = require('ethjs-query');
+const HttpProvider = require('@metamask/ethjs-provider-http');
+const Eth = require('@metamask/ethjs-query');
 const eth = new Eth(new HttpProvider('http://localhost:8545'));
 
 eth.getBalance('0x407d73d8a49eeb85d32cf465507dd71d507100c1', cb);
@@ -71,8 +66,8 @@ Error handling is done through function callbacks or promised catches.
 `ethjs-query` comes equip with a full debug options for all data inputs and outputs.
 
 ```js
-const HttpProvider = require('ethjs-provider-http');
-const Eth = require('ethjs-query');
+const HttpProvider = require('@metamask/ethjs-provider-http');
+const Eth = require('@metamask/ethjs-query');
 const eth = new Eth(new HttpProvider('http://localhost:8545'), { debug: true, logger: console, jsonSpace: 0 });
 
 eth.accounts(cb);
@@ -93,8 +88,8 @@ eth.accounts(cb);
 `ethjs-query` supports all Ethereum specified RPC methods.
 
 ```js
-const HttpProvider = require('ethjs-provider-http');
-const Eth = require('ethjs-query');
+const HttpProvider = require('@metamask/ethjs-provider-http');
+const Eth = require('@metamask/ethjs-query');
 const eth = new Eth(new HttpProvider('http://localhost:8545'));
 
 eth.protocolVersion(cb);
