@@ -19,6 +19,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Remove implicit peerDependency `babel-runtime` ([#10](https://github.com/MetaMask/ethjs-query/pull/10))
 
+## [0.5.2]
+### Changed
+- Bump `@metamask/ethjs-format` from `^0.2.8` to `^0.2.9` ([#38](https://github.com/MetaMask/ethjs-query/pull/38))
+
+### Fixed
+- Restrict `@metamask/ethjs-rpc` to `^0.3.0 !0.3.1` ([#38](https://github.com/MetaMask/ethjs-query/pull/38))
+  - Dependency update in `@metamask/ethjs-rpc@0.3.1` is not supposed to land prior to `0.6.0`
+
+## [0.5.1]
+### Changed
+- Update from `ethjs-format@0.2.7`to `@metamask/ethjs-format@^0.2.8` ([#26](https://github.com/MetaMask/ethjs-query/pull/26))
+- Update from `ethjs-rpc@0.2.0` to `@metamask/ethjs-rpc@^0.3.0` ([#22](https://github.com/MetaMask/ethjs-query/pull/22))
+- docs: change examples to use `@metamask/` forks of `ethjs-` packages ([#29](https://github.com/MetaMask/ethjs-query/pull/29))
+
 ## [0.5.0]
 ### Changed
 - change to error reporting
@@ -168,7 +182,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/MetaMask/ethjs-query/compare/v0.7.0...HEAD
 [0.7.0]: https://github.com/MetaMask/ethjs-query/compare/v0.6.0...v0.7.0
-[0.6.0]: https://github.com/MetaMask/ethjs-query/compare/v0.5.0...v0.6.0
+[0.6.0]: https://github.com/MetaMask/ethjs-query/compare/v0.5.2...v0.6.0
+[0.5.2]: https://github.com/MetaMask/ethjs-query/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/MetaMask/ethjs-query/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/MetaMask/ethjs-query/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/MetaMask/ethjs-query/compare/v0.3.8...v0.4.0
 [0.3.8]: https://github.com/MetaMask/ethjs-query/compare/v0.3.7...v0.3.8
