@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update from `ethjs-format@0.2.7`to `@metamask/ethjs-format@^0.2.8` ([#26](https://github.com/MetaMask/ethjs-query/pull/26))
 - Update from `ethjs-rpc@0.2.0` to `@metamask/ethjs-rpc@^0.3.0` ([#22](https://github.com/MetaMask/ethjs-query/pull/22))
-- docs: change examples to use `@metamask/` forks of `ethjs-` packages ([#29](https://github.com/MetaMask/ethjs-query/pull/29))
+- Change examples to use `@metamask/` forks of `ethjs-` packages ([#29](https://github.com/MetaMask/ethjs-query/pull/29))
 
 ## [0.5.0]
 ### Changed
